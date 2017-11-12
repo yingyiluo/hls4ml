@@ -44,6 +44,8 @@ void compute_layer(
     bias_T    biases[CONFIG_T::n_out])
 {
 
+    // #pragma HLS pipeline II=1
+
     data_T data_cache;
     acc_T acc[CONFIG_T::n_out];
 
@@ -59,8 +61,6 @@ void compute_layer(
 
     int unroll_factor_in  = CONFIG_T::n_in / CONFIG_T::roll_factor_in;
     int unroll_factor_out = CONFIG_T::n_out / CONFIG_T::roll_factor_out;
-    //int unroll_factor_in  = CONFIG_T::n_in;
-    //int unroll_factor_out = CONFIG_T::n_out;
 
     Reset: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
       #pragma HLS UNROLL factor=unroll_factor_out
