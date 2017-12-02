@@ -56,13 +56,13 @@ struct layer_config
    typename CONFIG_T::accum_t mult[CONFIG_T::n_in][CONFIG_T::n_out];
    typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
 
-   // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases                                                                                          
+   // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases
 #pragma HLS function_instantiate variable=weights,biases
 
    if (CONFIG_T::io_type == io_parallel){
-     // For parallel inputs:                                                                                                                                                              
-     //   - completely partition arrays -- target fabric                                                                                                                                  
-     //   - if we have an unroll factor, limit number of multipliers                                                                                                                      
+     // For parallel inputs:
+     //   - completely partition arrays -- target fabric
+     //   - if we have an unroll factor, limit number of multipliers
         #pragma HLS PIPELINE
         #pragma HLS ARRAY_PARTITION variable=weights complete
         #pragma HLS ARRAY_PARTITION variable=biases complete
@@ -73,11 +73,11 @@ struct layer_config
             #pragma HLS ALLOCATION instances=mul limit=multiplier_limit operation
      }
    } else if (CONFIG_T::io_type == io_serial){
-     // TODO: Fill out the directives for serial input                                                                                                                                    
-     // #pragma HLS ALLOCATION instances=mul limit=1 operation                                                                                                                            
+     // TODO: Fill out the directives for serial input
+     // #pragma HLS ALLOCATION instances=mul limit=1 operation
    }
 
-   // Do the matrix-multiply                                                                                                                                                                
+   // Do the matrix-multiply
  Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
      cache = data[ii];
    Product2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
@@ -85,19 +85,19 @@ struct layer_config
      }
    }
 
-   // Initialize accumulator with input biases                                                                                                                                              
+   // Initialize accumulator with input biases
  ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
      acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
    }
 
-   // Accumulate multiplication result                                                                                                                                                      
+   // Accumulate multiplication result
  Accum1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
    Accum2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
        acc[jj] += mult[ii][jj];
      }
    }
 
-   // Cast to "res_t" type                                                                                                                                                                  
+   // Cast to "res_t" type 
  Result: for(int ires = 0; ires < CONFIG_T::n_out; ires++){
      res[ires] = (res_T) (acc[ires]);
    }
@@ -124,9 +124,9 @@ struct layer_config
     #pragma HLS function_instantiate variable=weights2
 
    if (CONFIG_T::io_type == io_parallel){
-     // For parallel inputs:                                                                                                                                                              
-     //   - completely partition arrays -- target fabric                                                                                                                                  
-     //   - if we have an unroll factor, limit number of multipliers                                                                                                                      
+     // For parallel inputs:
+     //   - completely partition arrays -- target fabric
+     //   - if we have an unroll factor, limit number of multipliers
         #pragma HLS PIPELINE
      #pragma HLS ARRAY_PARTITION variable=weights complete
      #pragma HLS ARRAY_PARTITION variable=weights2 complete
@@ -183,6 +183,68 @@ struct layer_config
      res[ires] = (res_T) (acc[ires]);
    }
  } 
+
+
+
+ template<class data_T, class res_T, typename CONFIG_T>
+   void compute_layer3(
+		      data_T    data[CONFIG_T::n_in],
+		      res_T     res[CONFIG_T::n_out],
+		      ap_fixed<18,8>  weights[32][1],
+		      typename CONFIG_T::bias_t    biases[CONFIG_T::n_out])
+ {
+   data_T cache;
+   typename CONFIG_T::accum_t mult[CONFIG_T::n_in][CONFIG_T::n_out];
+   typename CONFIG_T::accum_t acc[CONFIG_T::n_out];
+
+   // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases
+#pragma HLS function_instantiate variable=weights,biases
+
+   if (CONFIG_T::io_type == io_parallel){
+     // For parallel inputs:
+     //   - completely partition arrays -- target fabric
+     //   - if we have an unroll factor, limit number of multipliers
+        #pragma HLS PIPELINE
+        #pragma HLS ARRAY_PARTITION variable=weights complete
+        #pragma HLS ARRAY_PARTITION variable=biases complete
+        #pragma HLS ARRAY_PARTITION variable=mult complete
+        #pragma HLS ARRAY_PARTITION variable=acc complete
+     if (CONFIG_T::reuse_factor > 1) {
+       int multiplier_limit  = ceil(CONFIG_T::n_in*CONFIG_T::n_out / CONFIG_T::reuse_factor);
+            #pragma HLS ALLOCATION instances=mul limit=multiplier_limit operation
+     }
+   } else if (CONFIG_T::io_type == io_serial){
+     // TODO: Fill out the directives for serial input
+     // #pragma HLS ALLOCATION instances=mul limit=1 operation
+   }
+
+   // Do the matrix-multiply
+ Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
+     cache = data[ii];
+   Product2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+       mult[ii][jj] = cache * weights[ii][jj];
+     }
+   }
+
+   // Initialize accumulator with input biases
+ ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
+     acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+   }
+
+   // Accumulate multiplication result
+ Accum1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
+   Accum2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+       acc[jj] += mult[ii][jj];
+     }
+   }
+
+   // Cast to "res_t" type 
+ Result: for(int ires = 0; ires < CONFIG_T::n_out; ires++){
+     res[ires] = (res_T) (acc[ires]);
+   }
+ } 
+
+
 
 
 }
