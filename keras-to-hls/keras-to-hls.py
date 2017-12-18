@@ -7,6 +7,8 @@ import argparse
 import yaml
 from shutil import copyfile
 
+import random
+
 #######################################
 ## Config module
 #######################################
@@ -43,17 +45,24 @@ def print_array_to_cpp(name, a, odir ):
         f.write("[{}]".format(x))
     f.write(" = {")
     
-    #fill c++ array.  
-    #not including internal brackets for multidimensional case
+    #fill c++ array.
+    #not including internal brackets for multidimensional case 
     i=0;
     for x in np.nditer(a, order='C'):
-        if i==0:
-            f.write("{}".format(x))
+        if name=="w1" and random.random() < .50:
+            if i==0:
+                f.write("0")
+            else:
+                f.write(", 0")
         else:
-            f.write(", {}".format(x))
+            if i==0:
+                f.write("{}".format(x))
+            else:
+                f.write(", {}".format(x))
         i=i+1
     f.write("};")
     f.close()
+
 
 ############################################################################################
 ## M A I N
@@ -131,6 +140,7 @@ def main():
 
         print layer
         layer_list.append( layer )
+        break
         
 
 
