@@ -5,6 +5,9 @@ import tarfile
 import json
 import argparse
 import yaml
+
+import random
+
 from shutil import copyfile
 
 #######################################
@@ -48,12 +51,18 @@ def print_array_to_cpp(name, a, odir ):
     i=0;
     zero_ctr = 0;
     for x in np.nditer(a, order='C'):
-        if x == 0: 
+        if name=="w1" and random.random() < .50:
+            print "ZERO"
             zero_ctr += 1
-        if i==0:
-            f.write("{}".format(x))
+            if i==0:
+                f.write("0")
+            else:
+                f.write(", 0")
         else:
-            f.write(", {}".format(x))
+            if i==0:
+                f.write("{}".format(x))
+            else:
+                f.write(", {}".format(x))
         i=i+1
     f.write("};")
     f.close()

@@ -1,0 +1,563 @@
+================================================================
+  Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC
+  Version 2016.4
+  Build 1756540 on Mon Jan 23 19:31:01 MST 2017
+  Copyright (C) 1986-2017 Xilinx, Inc. All Rights Reserved.
+================================================================
+INFO: [HLS 200-10] Running '/data/xilinx/Vivado_HLS/2016.4/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'kreis' on host 'rulinux04.dhcp.fnal.gov' (Linux_x86_64 version 3.10.0-327.10.1.el7.x86_64) on Tue Dec 19 22:43:44 CST 2017
+INFO: [HLS 200-10] On os "Scientific Linux release 7.2 (Nitrogen)"
+INFO: [HLS 200-10] In directory '/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4'
+INFO: [HLS 200-10] Creating and opening project '/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj'.
+INFO: [HLS 200-10] Adding design file 'firmware/myproject.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'myproject_test.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'firmware/weights' to the project
+INFO: [HLS 200-10] Creating and opening solution '/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+INFO: [HLS 200-10] Setting target device to 'xc7vx690tffg1927-2'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../myproject_test.cpp in debug mode
+   Compiling ../../../../firmware/myproject.cpp in debug mode
+   Generating csim.exe
+169
+32
+0.313477 
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-10] Analyzing design file 'firmware/myproject.cpp' ... 
+INFO: [HLS 200-10] Validating synthesis directives ...
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:18 ; elapsed = 00:00:09 . Memory (MB): peak = 420.965 ; gain = 16.715 ; free physical = 1977 ; free virtual = 42694
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:22 ; elapsed = 00:00:12 . Memory (MB): peak = 420.965 ; gain = 16.715 ; free physical = 1877 ; free virtual = 42694
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [XFORM 203-603] Inlining function 'ap_fixed_base<136, 84, false, (ap_q_mode)5, (ap_o_mode)3, 0>::operator<<' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:371).
+INFO: [XFORM 203-603] Inlining function 'ap_fixed_base<1, 33, false, (ap_q_mode)5, (ap_o_mode)0, 0>::overflow_adjust' into 'ap_fixed_base<1, 33, false, (ap_q_mode)5, (ap_o_mode)0, 0>::ap_fixed_base<84, 84, false, (ap_q_mode)5, (ap_o_mode)3, 0>' ().
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:27 ; elapsed = 00:00:18 . Memory (MB): peak = 755.078 ; gain = 350.828 ; free physical = 1487 ; free virtual = 42388
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [XFORM 203-602] Inlining function 'fp_struct<double>::mantissa' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:368) automatically.
+INFO: [XFORM 203-602] Inlining function 'fp_struct<double>::expv' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:371) automatically.
+INFO: [XFORM 203-602] Inlining function 'fp_struct<double>::__signbit' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:383) automatically.
+INFO: [XFORM 203-602] Inlining function 'hls::cast_IEEE754<int, double>' into '__hls_fptosi_double_i32' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/lib_floatconversion.cpp:43) automatically.
+INFO: [XFORM 203-602] Inlining function '__hls_fptosi_double_i32' into 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:72) automatically.
+INFO: [XFORM 203-602] Inlining function '__hls_fptosi_double_i32' into 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:72) automatically.
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:28 ; elapsed = 00:00:19 . Memory (MB): peak = 814.637 ; gain = 410.387 ; free physical = 1473 ; free virtual = 42381
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56:50).
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::relu<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config1>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_activation.h:49:39).
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56:55).
+INFO: [XFORM 203-501] Unrolling loop 'ProductCount1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:86) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Product1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:99) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Accum1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:119) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Loop-1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_activation.h:54) in function 'nnet::relu<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'ProductCount1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:86) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'ProductCount2' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:87) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Product1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:99) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'ResetAccum' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:114) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Accum1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:119) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Accum2' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:120) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-501] Unrolling loop 'Result' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:126) in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' completely.
+INFO: [XFORM 203-101] Partitioning array 'data.V' (firmware/myproject.cpp:33) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'res.V' (firmware/myproject.cpp:34) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'layer1_out.V' (firmware/myproject.cpp:54) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'logits1.V' (firmware/myproject.cpp:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'logits2.V' (firmware/myproject.cpp:61) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b2.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:57) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'b1.V'  in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'acc.V' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:57) in dimension 1 completely.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.2' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.3' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.4' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.5' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.6' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.7' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.8' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.9' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.10' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.11' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.12' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.13' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.14' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.15' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.16' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.17' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.18' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.19' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.20' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.21' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.22' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.23' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.24' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.25' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.26' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.27' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.28' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.29' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.30' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'mult.V.31' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.2' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.3' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.4' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.5' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.6' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.7' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.8' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.9' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.10' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.11' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.12' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.13' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.14' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.15' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.16' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.17' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.18' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.19' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.20' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.21' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.22' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.23' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.24' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.25' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.26' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.27' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.28' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.29' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.30' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'mult.V.31' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) in dimension 1 completely.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.1' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.2' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.3' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.4' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.5' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.6' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.7' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.8' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-102] Partitioning array 'mult.V.9' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:56) automatically.
+INFO: [XFORM 203-602] Inlining function 'fp_struct<double>::mantissa' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:368) automatically.
+INFO: [XFORM 203-602] Inlining function 'fp_struct<double>::expv' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:371) automatically.
+INFO: [XFORM 203-602] Inlining function 'fp_struct<double>::__signbit' into 'hls::cast_IEEE754<int, double>' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_round.h:383) automatically.
+INFO: [XFORM 203-602] Inlining function 'hls::cast_IEEE754<int, double>' into '__hls_fptosi_double_i32' (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/lib_floatconversion.cpp:43) automatically.
+INFO: [XFORM 203-602] Inlining function '__hls_fptosi_double_i32' into 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:72) automatically.
+INFO: [XFORM 203-602] Inlining function '__hls_fptosi_double_i32' into 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:72) automatically.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:1) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>.0' at call site (firmware/myproject.cpp:63) by setting 'weights.V' to 'w2.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:1) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>.0.0' at call site (firmware/myproject.cpp:63) by setting 'biases.V' to 'b2.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0' at call site (firmware/myproject.cpp:58) by setting 'weights.V' to 'w1.V'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[0].V' to 'b1.V.0'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[1].V' to 'b1.V.1'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[2].V' to 'b1.V.2'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[3].V' to 'b1.V.3'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[4].V' to 'b1.V.4'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[5].V' to 'b1.V.5'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[6].V' to 'b1.V.6'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[7].V' to 'b1.V.7'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[8].V' to 'b1.V.8'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[9].V' to 'b1.V.9'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[10].V' to 'b1.V.10'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[11].V' to 'b1.V.11'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[12].V' to 'b1.V.12'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[13].V' to 'b1.V.13'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[14].V' to 'b1.V.14'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[15].V' to 'b1.V.15'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[16].V' to 'b1.V.16'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[17].V' to 'b1.V.17'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[18].V' to 'b1.V.18'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[19].V' to 'b1.V.19'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[20].V' to 'b1.V.20'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[21].V' to 'b1.V.21'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[22].V' to 'b1.V.22'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[23].V' to 'b1.V.23'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[24].V' to 'b1.V.24'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[25].V' to 'b1.V.25'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[26].V' to 'b1.V.26'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[27].V' to 'b1.V.27'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[28].V' to 'b1.V.28'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[29].V' to 'b1.V.29'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[30].V' to 'b1.V.30'.
+INFO: [XFORM 203-622] Instantiating function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0'(/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:19) to 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' at call site (firmware/myproject.cpp:58) by setting 'biases[31].V' to 'b1.V.31'.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_activation.h:109:21) to (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_activation.h:131:1) in function 'nnet::sigmoid<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, sigmoid_config2>'... converting 3 basic blocks.
+INFO: [XFORM 203-11] Balancing expressions in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>.0.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:1)...32 expression(s) balanced.
+INFO: [XFORM 203-11] Balancing expressions in function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:43)...168 expression(s) balanced.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:31 ; elapsed = 00:00:22 . Memory (MB): peak = 932.961 ; gain = 528.711 ; free physical = 1246 ; free virtual = 42207
+WARNING: [XFORM 203-631] Renaming function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config2>.0.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:1) into compute_layer.0.0.
+WARNING: [XFORM 203-631] Renaming function 'nnet::relu<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, relu_config1>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_activation.h:49:1) into relu.
+WARNING: [XFORM 203-631] Renaming function 'nnet::compute_layer<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, config1>.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:62:13) into compute_layer.0.0.0..
+WARNING: [XFORM 203-631] Renaming function 'nnet::sigmoid<ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, ap_fixed<18, 8, (ap_q_mode)5, (ap_o_mode)3, 0>, sigmoid_config2>' (/home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_activation.h:115:1) into sigmoid.
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:32 ; elapsed = 00:00:24 . Memory (MB): peak = 964.965 ; gain = 560.715 ; free physical = 1216 ; free virtual = 42180
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'myproject' ...
+WARNING: [SYN 201-103] Legalizing function name 'compute_layer.0.0.0.' to 'compute_layer_0_0_0_s'.
+WARNING: [SYN 201-103] Legalizing function name 'compute_layer.0.0' to 'compute_layer_0_0'.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Implementing module 'compute_layer_0_0_0_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'compute_layer.0.0.0.'.
+WARNING: [SCHED 204-69] Unable to satisfy resource constraint for operation type mul(II = 1).
+WARNING: [SCHED 204-69] Unable to schedule 'mul' operation ('p_Val2_6_94', /home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:100) due to limited resources (II = 2).
+WARNING: [SCHED 204-69] Unable to schedule 'mul' operation ('p_Val2_6_146', /home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:100) due to limited resources (II = 3).
+INFO: [SCHED 204-61] Pipelining result: Target II: 1, Final II: 4, Depth: 7.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 26 seconds; current allocated memory: 518.571 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Starting global binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.88 seconds; current allocated memory: 522.349 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Implementing module 'relu' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'relu'.
+INFO: [SCHED 204-61] Pipelining result: Target II: 1, Final II: 1, Depth: 1.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.71 seconds; current allocated memory: 523.280 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.09 seconds; current allocated memory: 523.893 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Implementing module 'compute_layer_0_0' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'compute_layer.0.0'.
+WARNING: [SCHED 204-69] Unable to satisfy resource constraint for operation type mul(II = 1).
+WARNING: [SCHED 204-69] Unable to schedule 'mul' operation ('p_Val2_1_22', /home/kreis/sparse_tests/extra_loop/HLS4ML/nnet_utils/nnet_layer.h:100) due to limited resources (II = 2).
+INFO: [SCHED 204-61] Pipelining result: Target II: 1, Final II: 3, Depth: 7.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.51 seconds; current allocated memory: 524.847 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Starting global binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.16 seconds; current allocated memory: 525.722 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Implementing module 'sigmoid' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'sigmoid'.
+INFO: [SCHED 204-61] Pipelining result: Target II: 1, Final II: 1, Depth: 3.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.17 seconds; current allocated memory: 525.937 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.02 seconds; current allocated memory: 526.060 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Implementing module 'myproject' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'myproject'.
+WARNING: [SCHED 204-62] II = 4 is infeasible due to incompatible II = 3 of 'call' operation ('logits2[0].V', firmware/myproject.cpp:63) to 'compute_layer.0.0'.
+WARNING: [SCHED 204-62] II = 5 is infeasible due to incompatible II = 4 of 'call' operation ('call_ret1', firmware/myproject.cpp:58) to 'compute_layer.0.0.0.'.
+WARNING: [SCHED 204-62] II = 6 is infeasible due to incompatible II = 4 of 'call' operation ('call_ret1', firmware/myproject.cpp:58) to 'compute_layer.0.0.0.'.
+INFO: [SCHED 204-61] Pipelining result: Target II: 1, Final II: 7, Depth: 18.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 526.437 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.66 seconds; current allocated memory: 527.535 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'compute_layer_0_0_0_s' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_9s_26_3' to 'myproject_mul_18sbkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_12s_28_3' to 'myproject_mul_18scud' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_11s_28_3' to 'myproject_mul_18sdEe' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_9s_27_3' to 'myproject_mul_18seOg' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_10s_27_3' to 'myproject_mul_18sfYi' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_9ns_27_3' to 'myproject_mul_18sg8j' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_10ns_28_3' to 'myproject_mul_18shbi' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_8ns_26_3' to 'myproject_mul_18sibs' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_10s_28_3' to 'myproject_mul_18sjbC' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'myproject_mul_18s_8s_25_3' to 'myproject_mul_18skbM' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sbkb': 3 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18scud': 8 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sdEe': 17 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18seOg': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sfYi': 6 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sg8j': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18shbi': 3 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sibs': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sjbC': 2 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18skbM': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'compute_layer_0_0_0_s'.
+INFO: [HLS 200-111]  Elapsed time: 0.7 seconds; current allocated memory: 534.230 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'relu' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'relu'.
+INFO: [HLS 200-111]  Elapsed time: 1.35 seconds; current allocated memory: 548.487 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'compute_layer_0_0' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+WARNING: [RTGEN 206-101] RTL name 'myproject_mul_18sjbC' is changed to 'myproject_mul_18sjbC_x' due to conflict.
+WARNING: [RTGEN 206-101] RTL name 'myproject_mul_18sfYi' is changed to 'myproject_mul_18sfYi_x' due to conflict.
+WARNING: [RTGEN 206-101] RTL name 'myproject_mul_18seOg' is changed to 'myproject_mul_18seOg_x' due to conflict.
+WARNING: [RTGEN 206-101] RTL name 'myproject_mul_18sg8j' is changed to 'myproject_mul_18sg8j_x' due to conflict.
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18seOg': 3 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sfYi': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sg8j': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'myproject_mul_18sjbC': 3 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'compute_layer_0_0'.
+INFO: [HLS 200-111]  Elapsed time: 0.24 seconds; current allocated memory: 552.156 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'sigmoid' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SYN 201-210] Renamed object name 'sigmoid_sigmoid_table3' to 'sigmoid_sigmoid_tlbW' due to the length limit 20
+INFO: [RTGEN 206-100] Finished creating RTL model for 'sigmoid'.
+INFO: [HLS 200-111]  Elapsed time: 0.29 seconds; current allocated memory: 555.368 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'myproject' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_0_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_1_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_2_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_3_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_4_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_5_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_6_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_7_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_8_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/data_9_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/res_0_V' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/const_size_in' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'myproject/const_size_out' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'myproject' to 'ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'myproject'.
+INFO: [HLS 200-111]  Elapsed time: 0.1 seconds; current allocated memory: 559.151 MB.
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18sbkb_MulnS_0'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18scud_MulnS_1'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18sdEe_MulnS_2'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18seOg_MulnS_3'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18sfYi_MulnS_4'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18sg8j_MulnS_5'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18shbi_MulnS_6'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18sibs_MulnS_7'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18sjbC_MulnS_8'
+INFO: [RTMG 210-282] Generating pipelined core: 'myproject_mul_18skbM_MulnS_9'
+INFO: [RTMG 210-279] Implementing memory 'sigmoid_sigmoid_tlbW_rom' using auto ROMs.
+INFO: [HLS 200-111] Finished generating all RTL models Time (s): cpu = 00:00:40 ; elapsed = 00:00:33 . Memory (MB): peak = 964.969 ; gain = 560.719 ; free physical = 1153 ; free virtual = 42134
+INFO: [SYSC 207-301] Generating SystemC RTL for myproject.
+INFO: [VHDL 208-304] Generating VHDL RTL for myproject.
+INFO: [VLOG 209-307] Generating Verilog RTL for myproject.
+INFO: [COSIM 212-47] Using XSIM for RTL simulation.
+INFO: [COSIM 212-14] Instrumenting C test bench ...
+   Build using "/data/xilinx/Vivado_HLS/2016.4/lnx64/tools/gcc/bin/g++"
+   Compiling myproject_test.cpp_pre.cpp.tb.cpp
+   Compiling apatb_myproject.cpp
+   Compiling myproject.cpp_pre.cpp.tb.cpp
+   Generating cosim.tv.exe
+INFO: [COSIM 212-302] Starting C TB testing ... 
+169
+32
+0.313477 
+INFO: [COSIM 212-333] Generating C post check test bench ...
+INFO: [COSIM 212-12] Generating RTL test bench ...
+INFO: [COSIM 212-323] Starting verilog simulation. 
+INFO: [COSIM 212-15] Starting XSIM ...
+INFO: [XSIM 43-3496] Using init file passed via -initfile option "/data/xilinx/Vivado/2016.4/data/xsim/ip/xsim_ip.ini".
+Vivado Simulator 2016.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: /data/xilinx/Vivado/2016.4/bin/unwrapped/lnx64.o/xelab xil_defaultlib.apatb_myproject_top -prj myproject.prj --initfile /data/xilinx/Vivado/2016.4/data/xsim/ip/xsim_ip.ini --lib ieee_proposed=./ieee_proposed -s myproject -debug wave 
+Multi-threading is on. Using 6 slave threads.
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject.autotb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module apatb_myproject_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/compute_layer_0_0_0_s.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module compute_layer_0_0_0_s
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/relu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module relu
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/compute_layer_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module compute_layer_0_0
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/sigmoid.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sigmoid
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sbkb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sbkb_MulnS_0
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sbkb
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18scud.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18scud_MulnS_1
+INFO: [VRFC 10-311] analyzing module myproject_mul_18scud
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sdEe.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sdEe_MulnS_2
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sdEe
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18seOg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18seOg_MulnS_3
+INFO: [VRFC 10-311] analyzing module myproject_mul_18seOg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sfYi.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sfYi_MulnS_4
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sfYi
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sg8j.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sg8j_MulnS_5
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sg8j
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18shbi.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18shbi_MulnS_6
+INFO: [VRFC 10-311] analyzing module myproject_mul_18shbi
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sibs.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sibs_MulnS_7
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sibs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sjbC.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sjbC_MulnS_8
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sjbC
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18skbM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18skbM_MulnS_9
+INFO: [VRFC 10-311] analyzing module myproject_mul_18skbM
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/sigmoid_sigmoid_tlbW.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sigmoid_sigmoid_tlbW_rom
+INFO: [VRFC 10-311] analyzing module sigmoid_sigmoid_tlbW
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.myproject_mul_18sbkb_MulnS_0
+Compiling module xil_defaultlib.myproject_mul_18sbkb(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18scud_MulnS_1
+Compiling module xil_defaultlib.myproject_mul_18scud(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sdEe_MulnS_2
+Compiling module xil_defaultlib.myproject_mul_18sdEe(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18seOg_MulnS_3
+Compiling module xil_defaultlib.myproject_mul_18seOg(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sfYi_MulnS_4
+Compiling module xil_defaultlib.myproject_mul_18sfYi(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sg8j_MulnS_5
+Compiling module xil_defaultlib.myproject_mul_18sg8j(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18shbi_MulnS_6
+Compiling module xil_defaultlib.myproject_mul_18shbi(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sibs_MulnS_7
+Compiling module xil_defaultlib.myproject_mul_18sibs(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sjbC_MulnS_8
+Compiling module xil_defaultlib.myproject_mul_18sjbC(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18skbM_MulnS_9
+Compiling module xil_defaultlib.myproject_mul_18skbM(ID=1,NUM_ST...
+Compiling module xil_defaultlib.compute_layer_0_0_0_s
+Compiling module xil_defaultlib.compute_layer_0_0
+Compiling module xil_defaultlib.relu
+Compiling module xil_defaultlib.sigmoid_sigmoid_tlbW_rom
+Compiling module xil_defaultlib.sigmoid_sigmoid_tlbW(DataWidth=1...
+Compiling module xil_defaultlib.sigmoid
+Compiling module xil_defaultlib.myproject
+Compiling module xil_defaultlib.apatb_myproject_top
+Built simulation snapshot myproject
+
+****** xsim v2016.4 (64-bit)
+  **** SW Build 1756540 on Mon Jan 23 19:11:19 MST 2017
+  **** IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+    ** Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/myproject/xsim_script.tcl
+# xsim {myproject} -autoloadwcfg -tclbatch {myproject.tcl}
+Vivado Simulator 2016.4
+Time resolution is 1 ps
+source myproject.tcl
+## log_wave -r /
+## set designtopgroup [add_wave_group "Design Top Signals"]
+## set coutputgroup [add_wave_group "C Outputs" -into $designtopgroup]
+## set const_size_out_group [add_wave_group const_size_out(wire) -into $coutputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_out_ap_vld -into $const_size_out_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_out -into $const_size_out_group -radix hex
+## set const_size_in_group [add_wave_group const_size_in(wire) -into $coutputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_in_ap_vld -into $const_size_in_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_in -into $const_size_in_group -radix hex
+## set res_group [add_wave_group res(wire) -into $coutputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/res_0_V_ap_vld -into $res_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/res_0_V -into $res_group -radix hex
+## set cinputgroup [add_wave_group "C Inputs" -into $designtopgroup]
+## set data_group [add_wave_group data(wire) -into $cinputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_9_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_8_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_7_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_6_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_5_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_4_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_3_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_2_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_1_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_0_V -into $data_group -radix hex
+## set blocksiggroup [add_wave_group "Block-level IO Handshake" -into $designtopgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_start -into $blocksiggroup
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_done -into $blocksiggroup
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_idle -into $blocksiggroup
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_ready -into $blocksiggroup
+## set resetgroup [add_wave_group "Reset" -into $designtopgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_rst -into $resetgroup
+## set clockgroup [add_wave_group "Clock" -into $designtopgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_clk -into $clockgroup
+## set testbenchgroup [add_wave_group "Test Bench Signals"]
+## set tbinternalsiggroup [add_wave_group "Internal Signals" -into $testbenchgroup]
+## set tb_simstatus_group [add_wave_group "Simulation Status" -into $tbinternalsiggroup]
+## set tb_portdepth_group [add_wave_group "Port Depth" -into $tbinternalsiggroup]
+## add_wave /apatb_myproject_top/AUTOTB_TRANSACTION_NUM -into $tb_simstatus_group -radix hex
+## add_wave /apatb_myproject_top/ready_cnt -into $tb_simstatus_group -radix hex
+## add_wave /apatb_myproject_top/done_cnt -into $tb_simstatus_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_0_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_1_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_2_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_3_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_4_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_5_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_6_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_7_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_8_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_9_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_res_0_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_const_size_in -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_const_size_out -into $tb_portdepth_group -radix hex
+## set tbcoutputgroup [add_wave_group "C Outputs" -into $testbenchgroup]
+## set tb_const_size_out_group [add_wave_group const_size_out(wire) -into $tbcoutputgroup]
+## add_wave /apatb_myproject_top/const_size_out_ap_vld -into $tb_const_size_out_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/const_size_out -into $tb_const_size_out_group -radix hex
+## set tb_const_size_in_group [add_wave_group const_size_in(wire) -into $tbcoutputgroup]
+## add_wave /apatb_myproject_top/const_size_in_ap_vld -into $tb_const_size_in_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/const_size_in -into $tb_const_size_in_group -radix hex
+## set tb_res_group [add_wave_group res(wire) -into $tbcoutputgroup]
+## add_wave /apatb_myproject_top/res_0_V_ap_vld -into $tb_res_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/res_0_V -into $tb_res_group -radix hex
+## set tbcinputgroup [add_wave_group "C Inputs" -into $testbenchgroup]
+## set tb_data_group [add_wave_group data(wire) -into $tbcinputgroup]
+## add_wave /apatb_myproject_top/data_9_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_8_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_7_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_6_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_5_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_4_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_3_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_2_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_1_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_0_V -into $tb_data_group -radix hex
+## save_wave_config myproject.wcfg
+## run all
+////////////////////////////////////////////////////////////////////////////////////
+// Inter-Transaction Progress: Completed Transaction / Total Transaction
+// Intra-Transaction Progress: Measured Latency / Latency Estimation * 100%
+//
+// RTL Simulation : "Inter-Transaction Progress" ["Intra-Transaction Progress"] @ "Simulation Time"
+////////////////////////////////////////////////////////////////////////////////////
+// RTL Simulation : 0 / 1 [0.00%] @ "113000"
+// RTL Simulation : 1 / 1 [0.00%] @ "208000"
+////////////////////////////////////////////////////////////////////////////////////
+$finish called at time : 227500 ps : File "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject.autotb.v" Line 946
+## quit
+INFO: [Common 17-206] Exiting xsim at Tue Dec 19 22:44:41 2017...
+INFO: [COSIM 212-316] Starting C post checking ...
+0.313477 
+INFO: [COSIM 212-1000] *** C/RTL co-simulation finished: PASS ***
+INFO: [HLS 200-112] Total elapsed time: 57.69 seconds; peak allocated memory: 559.151 MB.

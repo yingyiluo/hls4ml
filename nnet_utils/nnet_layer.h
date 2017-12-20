@@ -77,13 +77,38 @@ void compute_layer(
         // #pragma HLS ALLOCATION instances=mul limit=1 operation
     }
 
+    
+    int mult_i[CONFIG_T::n_in*CONFIG_T::n_out - CONFIG_T::n_zeros]; 
+    int mult_j[CONFIG_T::n_in*CONFIG_T::n_out - CONFIG_T::n_zeros];
+
+    // Initialize mult to zero, and make list of i-j pairs with nonzero weight
+    int mult_count = 0;
+    ProductCount1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
+         ProductCount2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+               mult[ii][jj] = 0;
+               if(weights[ii][jj] != 0){
+                   mult_i[mult_count] = ii;
+		   mult_j[mult_count] = jj;
+		   mult_count++;
+               }
+          }
+     }
+    std::cout << mult_count << std::endl;
+
+    //Loop through nonzero weights and do required multiplications
+   Product1: for(int kk=0; kk<CONFIG_T::n_in*CONFIG_T::n_out - CONFIG_T::n_zeros; kk++){
+      mult[ mult_i[kk] ][ mult_j[kk] ] += data[ mult_i[kk] ]*weights[ mult_i[kk] ][ mult_j[kk] ];
+   }
+
+
+
     // Do the matrix-multiply
-    Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
-        cache = data[ii];
-        Product2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
-            mult[ii][jj] = cache * weights[ii][jj];
-        }
-    }
+    //    Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
+    //        cache = data[ii];
+    //        Product2: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+    //            mult[ii][jj] = cache * weights[ii][jj];
+    //        }
+    //    }
 
     // Initialize accumulator with input biases
     ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {

@@ -1,0 +1,202 @@
+@I [SIM-47] Using XSIM for RTL simulation.
+@I [SIM-14] Instrumenting C test bench ...
+   Build using "/data/xilinx/Vivado_HLS/2016.4/lnx64/tools/gcc/bin/g++"
+   Compiling myproject_test.cpp_pre.cpp.tb.cpp
+   Compiling apatb_myproject.cpp
+   Compiling myproject.cpp_pre.cpp.tb.cpp
+   Generating cosim.tv.exe
+@I [SIM-302] Starting C TB testing ... 
+@I [SIM-333] Generating C post check test bench ...
+@I [SIM-12] Generating RTL test bench ...
+@I [SIM-323] Starting verilog simulation. 
+@I [SIM-15] Starting XSIM ...
+@I [SIM-316] Starting C post checking ...
+169
+32
+0.313477 
+INFO: [XSIM 43-3496] Using init file passed via -initfile option "/data/xilinx/Vivado/2016.4/data/xsim/ip/xsim_ip.ini".
+Vivado Simulator 2016.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: /data/xilinx/Vivado/2016.4/bin/unwrapped/lnx64.o/xelab xil_defaultlib.apatb_myproject_top -prj myproject.prj --initfile /data/xilinx/Vivado/2016.4/data/xsim/ip/xsim_ip.ini --lib ieee_proposed=./ieee_proposed -s myproject -debug wave 
+Multi-threading is on. Using 6 slave threads.
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject.autotb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module apatb_myproject_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/compute_layer_0_0_0_s.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module compute_layer_0_0_0_s
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/relu.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module relu
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/compute_layer_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module compute_layer_0_0
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/sigmoid.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sigmoid
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sbkb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sbkb_MulnS_0
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sbkb
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18scud.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18scud_MulnS_1
+INFO: [VRFC 10-311] analyzing module myproject_mul_18scud
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sdEe.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sdEe_MulnS_2
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sdEe
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18seOg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18seOg_MulnS_3
+INFO: [VRFC 10-311] analyzing module myproject_mul_18seOg
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sfYi.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sfYi_MulnS_4
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sfYi
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sg8j.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sg8j_MulnS_5
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sg8j
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18shbi.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18shbi_MulnS_6
+INFO: [VRFC 10-311] analyzing module myproject_mul_18shbi
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sibs.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sibs_MulnS_7
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sibs
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18sjbC.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sjbC_MulnS_8
+INFO: [VRFC 10-311] analyzing module myproject_mul_18sjbC
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject_mul_18skbM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module myproject_mul_18skbM_MulnS_9
+INFO: [VRFC 10-311] analyzing module myproject_mul_18skbM
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/sigmoid_sigmoid_tlbW.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sigmoid_sigmoid_tlbW_rom
+INFO: [VRFC 10-311] analyzing module sigmoid_sigmoid_tlbW
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.myproject_mul_18sbkb_MulnS_0
+Compiling module xil_defaultlib.myproject_mul_18sbkb(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18scud_MulnS_1
+Compiling module xil_defaultlib.myproject_mul_18scud(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sdEe_MulnS_2
+Compiling module xil_defaultlib.myproject_mul_18sdEe(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18seOg_MulnS_3
+Compiling module xil_defaultlib.myproject_mul_18seOg(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sfYi_MulnS_4
+Compiling module xil_defaultlib.myproject_mul_18sfYi(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sg8j_MulnS_5
+Compiling module xil_defaultlib.myproject_mul_18sg8j(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18shbi_MulnS_6
+Compiling module xil_defaultlib.myproject_mul_18shbi(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sibs_MulnS_7
+Compiling module xil_defaultlib.myproject_mul_18sibs(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18sjbC_MulnS_8
+Compiling module xil_defaultlib.myproject_mul_18sjbC(ID=1,NUM_ST...
+Compiling module xil_defaultlib.myproject_mul_18skbM_MulnS_9
+Compiling module xil_defaultlib.myproject_mul_18skbM(ID=1,NUM_ST...
+Compiling module xil_defaultlib.compute_layer_0_0_0_s
+Compiling module xil_defaultlib.compute_layer_0_0
+Compiling module xil_defaultlib.relu
+Compiling module xil_defaultlib.sigmoid_sigmoid_tlbW_rom
+Compiling module xil_defaultlib.sigmoid_sigmoid_tlbW(DataWidth=1...
+Compiling module xil_defaultlib.sigmoid
+Compiling module xil_defaultlib.myproject
+Compiling module xil_defaultlib.apatb_myproject_top
+Built simulation snapshot myproject
+
+****** xsim v2016.4 (64-bit)
+  **** SW Build 1756540 on Mon Jan 23 19:11:19 MST 2017
+  **** IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+    ** Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/myproject/xsim_script.tcl
+# xsim {myproject} -autoloadwcfg -tclbatch {myproject.tcl}
+Vivado Simulator 2016.4
+Time resolution is 1 ps
+source myproject.tcl
+## log_wave -r /
+## set designtopgroup [add_wave_group "Design Top Signals"]
+## set coutputgroup [add_wave_group "C Outputs" -into $designtopgroup]
+## set const_size_out_group [add_wave_group const_size_out(wire) -into $coutputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_out_ap_vld -into $const_size_out_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_out -into $const_size_out_group -radix hex
+## set const_size_in_group [add_wave_group const_size_in(wire) -into $coutputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_in_ap_vld -into $const_size_in_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/const_size_in -into $const_size_in_group -radix hex
+## set res_group [add_wave_group res(wire) -into $coutputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/res_0_V_ap_vld -into $res_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/res_0_V -into $res_group -radix hex
+## set cinputgroup [add_wave_group "C Inputs" -into $designtopgroup]
+## set data_group [add_wave_group data(wire) -into $cinputgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_9_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_8_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_7_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_6_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_5_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_4_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_3_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_2_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_1_V -into $data_group -radix hex
+## add_wave /apatb_myproject_top/AESL_inst_myproject/data_0_V -into $data_group -radix hex
+## set blocksiggroup [add_wave_group "Block-level IO Handshake" -into $designtopgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_start -into $blocksiggroup
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_done -into $blocksiggroup
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_idle -into $blocksiggroup
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_ready -into $blocksiggroup
+## set resetgroup [add_wave_group "Reset" -into $designtopgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_rst -into $resetgroup
+## set clockgroup [add_wave_group "Clock" -into $designtopgroup]
+## add_wave /apatb_myproject_top/AESL_inst_myproject/ap_clk -into $clockgroup
+## set testbenchgroup [add_wave_group "Test Bench Signals"]
+## set tbinternalsiggroup [add_wave_group "Internal Signals" -into $testbenchgroup]
+## set tb_simstatus_group [add_wave_group "Simulation Status" -into $tbinternalsiggroup]
+## set tb_portdepth_group [add_wave_group "Port Depth" -into $tbinternalsiggroup]
+## add_wave /apatb_myproject_top/AUTOTB_TRANSACTION_NUM -into $tb_simstatus_group -radix hex
+## add_wave /apatb_myproject_top/ready_cnt -into $tb_simstatus_group -radix hex
+## add_wave /apatb_myproject_top/done_cnt -into $tb_simstatus_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_0_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_1_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_2_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_3_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_4_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_5_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_6_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_7_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_8_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_data_9_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_res_0_V -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_const_size_in -into $tb_portdepth_group -radix hex
+## add_wave /apatb_myproject_top/LENGTH_const_size_out -into $tb_portdepth_group -radix hex
+## set tbcoutputgroup [add_wave_group "C Outputs" -into $testbenchgroup]
+## set tb_const_size_out_group [add_wave_group const_size_out(wire) -into $tbcoutputgroup]
+## add_wave /apatb_myproject_top/const_size_out_ap_vld -into $tb_const_size_out_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/const_size_out -into $tb_const_size_out_group -radix hex
+## set tb_const_size_in_group [add_wave_group const_size_in(wire) -into $tbcoutputgroup]
+## add_wave /apatb_myproject_top/const_size_in_ap_vld -into $tb_const_size_in_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/const_size_in -into $tb_const_size_in_group -radix hex
+## set tb_res_group [add_wave_group res(wire) -into $tbcoutputgroup]
+## add_wave /apatb_myproject_top/res_0_V_ap_vld -into $tb_res_group -color #ffff00 -radix hex
+## add_wave /apatb_myproject_top/res_0_V -into $tb_res_group -radix hex
+## set tbcinputgroup [add_wave_group "C Inputs" -into $testbenchgroup]
+## set tb_data_group [add_wave_group data(wire) -into $tbcinputgroup]
+## add_wave /apatb_myproject_top/data_9_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_8_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_7_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_6_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_5_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_4_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_3_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_2_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_1_V -into $tb_data_group -radix hex
+## add_wave /apatb_myproject_top/data_0_V -into $tb_data_group -radix hex
+## save_wave_config myproject.wcfg
+## run all
+////////////////////////////////////////////////////////////////////////////////////
+// Inter-Transaction Progress: Completed Transaction / Total Transaction
+// Intra-Transaction Progress: Measured Latency / Latency Estimation * 100%
+//
+// RTL Simulation : "Inter-Transaction Progress" ["Intra-Transaction Progress"] @ "Simulation Time"
+////////////////////////////////////////////////////////////////////////////////////
+// RTL Simulation : 0 / 1 [0.00%] @ "113000"
+// RTL Simulation : 1 / 1 [0.00%] @ "208000"
+////////////////////////////////////////////////////////////////////////////////////
+$finish called at time : 227500 ps : File "/home/kreis/sparse_tests/extra_loop/HLS4ML/keras-to-hls/my-hls-dir-test_reuse4/myproject_prj/solution1/sim/verilog/myproject.autotb.v" Line 946
+## quit
+INFO: [Common 17-206] Exiting xsim at Tue Dec 19 22:44:41 2017...
+0.313477 
+@I [SIM-1000] *** C/RTL co-simulation finished: PASS ***
