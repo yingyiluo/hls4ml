@@ -115,7 +115,7 @@ void conv_1d(
     }
 
     
-    // Accumulate multiplication result, leaving channels unsummed
+    // Accumulate multiplication result, leaving channels unsummed for now
     AccumOutPreChan: for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
         AccumFiltPreChan: for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
             AccumChanPreChan: for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
