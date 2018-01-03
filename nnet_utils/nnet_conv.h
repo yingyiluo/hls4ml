@@ -56,11 +56,13 @@ void conv_1d(
 
     data_T   data_padded[CONFIG_T::pad_left + CONFIG_T::y_in + CONFIG_T::pad_right][CONFIG_T::n_chan];
     typename CONFIG_T::accum_t mult[CONFIG_T::y_out][CONFIG_T::n_filt][CONFIG_T::n_chan][CONFIG_T::y_filt];
+    typename CONFIG_T::accum_t acc_prechannel[CONFIG_T::y_out][CONFIG_T::n_filt][CONFIG_T::n_chan];
     typename CONFIG_T::accum_t acc[CONFIG_T::y_out][CONFIG_T::n_filt];
 
     #pragma HLS ARRAY_PARTITION variable=data_padded complete
     #pragma HLS ARRAY_PARTITION variable=mult complete
     #pragma HLS ARRAY_PARTITION variable=acc complete
+    #pragma HLS ARRAY_PARTITION variable=acc_prechannel complete
     
     // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases 
     #pragma HLS function_instantiate variable=weights,biases
@@ -103,25 +105,42 @@ void conv_1d(
     }//end output loop
 
 
-    // Initialize accumulator with input biases
+    // Initialize accumulator 
     for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
 	for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
-	    acc[ii][ff]=biases[ff];
+            for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
+	        acc_prechannel[ii][ff][cc] = 0;
+            }
 	}
     }
 
     
-    // Accumulate multiplication result
-    AccumOut: for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
-        AccumFilt: for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
-	 
-	    //Do "dot product" sum within filter and sum over channels
-            AccumChan: for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
-                AccumDot: for(int jj = 0; jj < CONFIG_T::y_filt; jj++){
-		    acc[ii][ff] += mult[ii][ff][cc][jj];
+    // Accumulate multiplication result, leaving channels unsummed
+    AccumOutPreChan: for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
+        AccumFiltPreChan: for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
+            AccumChanPreChan: for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
+                AccumDotPreChan: for(int jj = 0; jj < CONFIG_T::y_filt; jj++){
+		    acc_prechannel[ii][ff][cc] += mult[ii][ff][cc][jj];
                 }//end dot product loop
 	    }//end channel loop
+	}//end filter loop
+    }//end output loop
 
+
+    // Initialize final accumulator for sum over channels
+    for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
+	for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
+            acc[ii][ff] = biases[ff];
+	}
+    }
+
+
+    // Accumulate multiplication result, with sum over channels
+    AccumOut: for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
+        AccumFilt: for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
+            AccumChan: for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
+		    acc[ii][ff] += acc_prechannel[ii][ff][cc];
+	    }//end channel loop
 	}//end filter loop
     }//end output loop
 
