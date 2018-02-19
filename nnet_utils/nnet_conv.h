@@ -56,7 +56,7 @@ void conv_1d(
 	     typename CONFIG_T::weight_t  weights[CONFIG_T::y_filt * CONFIG_T::n_chan * CONFIG_T::n_filt],
 	     typename CONFIG_T::bias_t    biases[CONFIG_T::n_filt])
 {
-
+    data_T   data_padded[CONFIG_T::y_in+CONFIG_T::pad_left+CONFIG_T::pad_right][CONFIG_T::n_chan];
     typename CONFIG_T::accum_t mult[CONFIG_T::y_out * CONFIG_T::n_filt * CONFIG_T::n_chan * CONFIG_T::y_filt];
     typename CONFIG_T::accum_t acc[CONFIG_T::y_out][CONFIG_T::n_filt];
 
@@ -68,6 +68,7 @@ void conv_1d(
         
         #pragma HLS PIPELINE II=CONFIG_T::reuse_factor
 
+        #pragma HLS ARRAY_PARTITION variable=data_padded complete dim=0
         #pragma HLS ARRAY_PARTITION variable=mult complete dim=0
         #pragma HLS ARRAY_PARTITION variable=acc complete dim=0
         #pragma HLS ARRAY_PARTITION variable=biases complete dim=0
@@ -80,7 +81,26 @@ void conv_1d(
         #pragma HLS ALLOCATION instances=mul limit=multiplier_limit operation
     }
     //Do nothing for CONFIG_T::io_type == io_serial
+    
 
+    // Initialize data_padded to zero
+    for(int i=0; i<CONFIG_T::y_in+CONFIG_T::pad_left+CONFIG_T::pad_right; i++){
+        for(int j=0; j<CONFIG_T::n_chan; j++){
+            data_padded[i][j]=0;
+        }
+    }
+
+    // Copy data into data_padded
+    for(int i=CONFIG_T::pad_left; i<CONFIG_T::y_in+CONFIG_T::pad_left; i++){
+        for(int j=0; j<CONFIG_T::n_chan; j++){
+            data_padded[i][j]=data[i-CONFIG_T::pad_left][j];
+        }
+    }
+
+    // Initialize multiplier result to zero
+    //for(int i=0; i< CONFIG_T::y_out * CONFIG_T::n_filt * CONFIG_T::n_chan * CONFIG_T::y_filt; i++){
+    //    mult[i]=0;
+    //}
 
     // Convolve, saving all multiplication results to accumulate later
     ConvOut: for(int ii = 0; ii < CONFIG_T::y_out; ii++) {
@@ -90,13 +110,16 @@ void conv_1d(
                     
                     int index_mult   = ii*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::y_filt + ff*CONFIG_T::n_chan*CONFIG_T::y_filt + cc*CONFIG_T::y_filt + jj;
                     int index_weight = jj*CONFIG_T::n_chan*CONFIG_T::n_filt + cc*CONFIG_T::n_filt + ff;
+		    
+                    mult[index_mult] = data_padded[ii*CONFIG_T::stride+jj][cc] * weights[index_weight];
                     
-                    if((ii*CONFIG_T::stride+jj) < CONFIG_T::pad_left || (ii*CONFIG_T::stride+jj) >= (CONFIG_T::pad_left + CONFIG_T::y_in)){
-                        mult[index_mult] = 0;
-                    }
-                    else {
-                        mult[index_mult] = data[ii*CONFIG_T::stride+jj-CONFIG_T::pad_left][cc] * weights[index_weight];
-                    }
+//                    if((ii*CONFIG_T::stride+jj) < CONFIG_T::pad_left || (ii*CONFIG_T::stride+jj) >= (CONFIG_T::pad_left + CONFIG_T::y_in)){
+//                        mult[index_mult] = 0;
+//                    }
+//                    else {
+//		      if( !((ii*CONFIG_T::stride+jj) < CONFIG_T::pad_left || (ii*CONFIG_T::stride+jj) >= (CONFIG_T::pad_left + CONFIG_T::y_in))){
+//      		  mult[index_mult] = data[ii*CONFIG_T::stride+jj-CONFIG_T::pad_left][cc] * weights[index_weight];
+//                    }
                 }
 	    	}//end channel loop
 		}//end filter loop
