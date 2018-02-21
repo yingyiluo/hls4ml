@@ -49,8 +49,8 @@ struct layer_config
 void compute_layer(
     data_T    data[CONFIG_T::n_in],
     res_T     res[CONFIG_T::n_out],
-    typename CONFIG_T::weight_t  weights[CONFIG_T::n_in][CONFIG_T::n_out],
-    typename CONFIG_T::bias_t    biases[CONFIG_T::n_out])
+    const typename CONFIG_T::weight_t  weights[CONFIG_T::n_in][CONFIG_T::n_out],
+    const typename CONFIG_T::bias_t    biases[CONFIG_T::n_out])
 {
     data_T cache;
     typename CONFIG_T::accum_t mult[CONFIG_T::n_in][CONFIG_T::n_out];

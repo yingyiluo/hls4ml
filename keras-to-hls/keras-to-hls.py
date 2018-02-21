@@ -45,9 +45,9 @@ def print_array_to_cpp(name, a, odir ):
     
     #c++ variable 
     if "w" in name: 
-        f.write("weight_default_t {}".format(name))
+        f.write("static const weight_default_t {}".format(name))
     elif "b" in name: 
-        f.write("bias_default_t {}".format(name))
+        f.write("static const bias_default_t {}".format(name))
     else:
         raise Exception('ERROR: Unkown weights type')
 

@@ -51,8 +51,8 @@ template<class data_T, class res_T, typename CONFIG_T>
 void conv_1d(
 	     data_T    data[CONFIG_T::y_in][CONFIG_T::n_chan],
 	     res_T     res[CONFIG_T::y_out][CONFIG_T::n_filt],
-	     typename CONFIG_T::weight_t  weights[CONFIG_T::y_filt * CONFIG_T::n_chan * CONFIG_T::n_filt],
-	     typename CONFIG_T::bias_t    biases[CONFIG_T::n_filt])
+	     const typename CONFIG_T::weight_t  weights[CONFIG_T::y_filt * CONFIG_T::n_chan * CONFIG_T::n_filt],
+	     const typename CONFIG_T::bias_t    biases[CONFIG_T::n_filt])
 {
 
     typename CONFIG_T::accum_t mult[CONFIG_T::y_out * CONFIG_T::n_filt * CONFIG_T::n_chan * CONFIG_T::y_filt];
