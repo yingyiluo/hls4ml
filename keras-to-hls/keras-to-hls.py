@@ -25,6 +25,10 @@ def parse_config(config_file) :
 #######################################
 ## Print a bias or weight array to C++
 #######################################
+class print_precision(float):
+    def __str__(self):
+        return "%.32f"%self
+
 def print_array_to_cpp(name, a, odir ):
 
     #count zeros
@@ -64,9 +68,11 @@ def print_array_to_cpp(name, a, odir ):
     i=0
     for x in np.nditer(a, order='C'):
         if i==0:
-            f.write("{}".format(x))
+#            f.write("{}".format(print_precision(x)))
+            f.write("{}".format("%.32f"%x))
         else:
-            f.write(", {}".format(x))
+#            f.write(", {}".format(print_precision(x)))
+            f.write(", {}".format("%.32f"%x))
         i=i+1
     f.write("};\n")
     f.close()
