@@ -329,8 +329,8 @@ def hls_writer(layer_list, yamlConfig):
         typedef bias_default_t bias_t;
         typedef weight_default_t weight_t;
         }};\n"""
-    
-    
+
+
 
     activ_config_template = """struct {type}_config{index} : nnet::activ_config {{
         static const unsigned n_in = {n_in};
