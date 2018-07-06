@@ -25,7 +25,7 @@
 
 namespace nnet {
 
-struct conv_config
+struct subconv_config
 {
     // Internal data type definitions                                                                                      
     typedef float bias_t;
