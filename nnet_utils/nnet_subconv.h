@@ -17,8 +17,8 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef NNET_CONV_H_
-#define NNET_CONV_H_
+#ifndef NNET_SUBCONV_H_
+#define NNET_SUBCONV_H_
 
 #include "nnet_common.h"
 #include <cstdlib>
