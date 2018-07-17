@@ -111,6 +111,8 @@ def main():
         cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), weights, yamlConfig['OutputDir'])
         print_array_to_cpp("b{}".format(layer_counter), biases, yamlConfig['OutputDir'])
         layer['weights_n_zeros'] = cur_n_zeros 
+        # default n_part for sublayer (no sublayers)
+        layer['n_part'] = 1        
 
         #Get number of inputs and outputs
         #(We take it from the weights to avoid dealing with InputLayer and Flatten details)
@@ -120,9 +122,9 @@ def main():
             # if this layer is too big (more than MAXMULT multiplications); 
             # break it out into chunks!
             layer['n_subout']=[weights.shape[1]]
-            layer['n_part'] = 1
             if layer['n_in']*layer['n_out']>MAXMULT:
                 n_subout = int(MAXMULT/layer['n_in'])
+                n_subout = max(n_subout,1)
                 n_totout = 0
                 layer['n_subout'] = []
                 layer['n_part'] = 0
@@ -160,6 +162,21 @@ def main():
                 layer['pad_left'] = 0
                 layer['pad_right'] = 0
             current_shape=[current_shape[0], layer['y_out'], layer['n_filt']]
+            if layer['y_out']*layer['n_filt']*layer['n_chan']*layer['y_filt']>MAXMULT:
+                y_subout = int(MAXMULT/(layer['n_filt']*layer['n_chan']*layer['y_filt']))
+                y_subout = max(y_subout,1)
+                y_totout = 0
+                layer['y_subout'] = []
+                layer['n_part'] = 0
+                while y_totout < layer['y_out']:
+                    if y_totout + y_subout <= layer['y_out']:
+                        layer['y_subout'].append(y_subout)
+                        y_totout += y_subout                    
+                    else:
+                        layer['y_subout'].append(layer['y_out']-y_totout)
+                        y_totout += layer['y_out']-y_totout
+
+                    layer['n_part'] += 1
         elif layer['class_name']=='Conv2D':
             layer['in_height']=current_shape[1]
             layer['in_width']=current_shape[2]
@@ -201,7 +218,11 @@ def main():
                 current_shape=[current_shape[0], layer['out_height'], layer['out_width'], layer['n_filt']]
         print 'Layer name: %s, layer type: %s, current shape: %s, number of zeros: %s'%(layer['name'], layer['class_name'], current_shape, cur_n_zeros)
         if layer['n_part'] > 1: 
-            print ' -> layer will be divided into %s sublayer calls; output neurons: %s '%(layer['n_part'], layer['n_subout'])
+            if layer['class_name']=='Dense':
+                print ' -> layer will be divided into %s sublayer calls; output neurons: %s '%(layer['n_part'], layer['n_subout'])
+            if layer['class_name']=='Conv1D':
+                print ' -> layer will be divided into %s subconv calls; output neurons: %s '%(layer['n_part'], layer['y_subout'])
+                
         layer_list.append( layer )
         
 
