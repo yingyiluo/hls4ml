@@ -24,6 +24,28 @@
 #include "hls_stream.h"
 #include <math.h>
 
+
+#ifdef __MTPUMPING__
+#include "dsp_builtins.h"
+#pragma SDS data access_pattern(a:SEQUENTIAL, b:SEQUENTIAL)
+#include <bitset>
+#define MBIT 32
+#define NBIT 16
+#define IBIT 4
+
+inline ap_fixed<NBIT, IBIT> int32_tofixed(int32_t inp) {
+  ap_int<MBIT> shiftbit (inp >> (NBIT-IBIT));
+  ap_fixed<NBIT, IBIT> fixed_result(0);
+  fixed_result.range(NBIT-1, 0) = shiftbit;
+  return fixed_result;
+}
+
+inline void fixed_toint(ap_int<NBIT> &to, ap_fixed<NBIT, IBIT> from) {
+  to = from.V;
+  //to = from.range(NBIT-1, 0);
+}
+#endif
+
 namespace nnet {
 
 struct layer_config
@@ -93,6 +115,72 @@ void compute_layer(
         }
     }
     
+
+#ifdef __MTPUMPING__
+    // Initialize accumulator with input biases
+    int32_t Accum[CONFIG_T::n_out];
+    SetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        Accum[iacc] = 0;
+    }
+
+//#pragma HLS array_partition variable=data complete dim=1
+#pragma HLS array_partition variable=weights complete dim=1
+#pragma HLS array_partition variable=Accum complete dim=1
+ 
+    bool clear = 0;
+    bool ap_clk_div2=0;
+    ap_int<16> sampa1 =0;
+    ap_int<16> sampa2 =0;
+    ap_int<16> sampb1 =0;
+    ap_int<16> sampb2 =0;
+
+    Product1: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
+      #pragma HLS pipeline
+      // Round in the in size for multipumping
+      unsigned int roundin = (CONFIG_T::n_in >> 1 << 1);
+    Product2: for(int ii = 0; ii < roundin; ii+=2) {
+      #pragma HLS unroll
+            fixed_toint(sampa1, data[ii]);
+            fixed_toint(sampa2, data[ii+1]);
+            fixed_toint(sampb1, weights[ii*CONFIG_T::n_out+jj]);
+            fixed_toint(sampb2, weights[(ii+1)*CONFIG_T::n_out+jj]);
+            Accum[jj] = __builtin_mac16x2(sampa1, sampa2, sampb1, sampb2, Accum[jj], clear, ap_clk_div2);
+              }
+      // In case odd number, calculate the rest with DSP
+    Product3: for(int ii = roundin; ii < CONFIG_T::n_in; ii++) {
+      #pragma HLS unroll
+            Accum[jj] = Accum[jj] + data[ii] * weights[ii*CONFIG_T::n_out+jj];
+              }
+          }
+
+    // Initialize accumulator with input biases
+    ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
+    }
+
+    Accum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        acc[iacc] += int32_tofixed(Accum[iacc]);
+    }
+
+
+    // Cast to "res_t" type
+    Result: for(int ires = 0; ires < CONFIG_T::n_out; ires++){
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        res[ires] = (res_T) (acc[ires]);
+    }    
+
+#else
     // Do the matrix-multiply
     Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
         if (CONFIG_T::io_type == io_serial){
@@ -114,6 +202,7 @@ void compute_layer(
         if (CONFIG_T::io_type == io_serial){
             #pragma HLS UNROLL
         }
+        //acc[iacc] = 0;
         acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
     }
 
@@ -135,6 +224,7 @@ void compute_layer(
         }
         res[ires] = (res_T) (acc[ires]);
     }    
+#endif
 }
 
 }
