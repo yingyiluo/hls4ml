@@ -36,6 +36,57 @@
 inline ap_fixed<NBIT, IBIT> int32_tofixed(int32_t inp) {
   ap_int<MBIT> shiftbit (inp >> (NBIT-IBIT));
   ap_fixed<NBIT, IBIT> fixed_result(0);
+
+#ifdef __OVERFLOW__
+  bool debug=false;
+  // Number of bit won't be interpreted
+  static const unsigned int L = (MBIT - (NBIT-IBIT)) - NBIT;
+  // Testing overflow bits
+  static const unsigned int testvalue = ((1<<L) - 1 ) << (NBIT-1);
+  static const unsigned int maxint = (((1<<(IBIT-1)) - 1)<< (NBIT-IBIT)) ; // Keep one for sign
+  static const unsigned int fixsignb = 1<<(NBIT-1);
+  static const unsigned int getdecimal = (1<<(NBIT-IBIT))-1;
+
+  bool isneg =inp & (1<<(MBIT-1));
+
+  if (debug)
+  {
+    const int b = 32 -(NBIT-IBIT);
+    std::cout << "input " << std::bitset<32>(inp) << std::endl;
+    std::cout << "shifted  " << std::bitset<b>(shiftbit) << std::endl;
+    std::cout << "testvalue" << std::bitset<b>(testvalue) << std::endl;
+    std::cout << "maxvalue " << std::bitset<b>(maxint) << std::endl;
+    std::cout << "size bit " << std::bitset<b>(1<<(NBIT-1)) << std::endl;
+    std::cout << "decimal  " << std::bitset<b>(getdecimal) << std::endl;
+  }
+
+  bool isover = false;
+  if (isneg)
+  {
+    //assuming twos complement notation 
+    isover = (~(shiftbit-1)) & testvalue;
+  }
+  else isover = shiftbit & testvalue;
+
+  //std::cout << "isneg " << isneg <<" isover " << isover << std::endl;
+  if (isover)
+  {
+    int decimalbit = shiftbit & getdecimal;
+    if (isneg)
+      shiftbit = (1 << (NBIT-1)) | decimalbit;
+    else
+      shiftbit = maxint | decimalbit;
+
+    if(debug)
+    {
+      ap_fixed<NBIT, IBIT> temp;
+      temp.range(NBIT-1, 0) = shiftbit;
+      std::cout << "decimal bit  " << std::bitset<NBIT>(decimalbit) <<"  value " << temp<< std::endl;
+    }
+  }
+#endif
+
+  //Obtain the last bit
   fixed_result.range(NBIT-1, 0) = shiftbit;
   return fixed_result;
 }
@@ -147,14 +198,18 @@ void compute_layer(
             fixed_toint(sampa2, data[ii+1]);
             fixed_toint(sampb1, weights[ii*CONFIG_T::n_out+jj]);
             fixed_toint(sampb2, weights[(ii+1)*CONFIG_T::n_out+jj]);
+            if (sampb1 == 0 && sampb2 == 0)
+              continue;
             Accum[jj] = __builtin_mac16x2(sampa1, sampa2, sampb1, sampb2, Accum[jj], clear, ap_clk_div2);
-              }
+        }
+
       // In case odd number, calculate the rest with DSP
-    Product3: for(int ii = roundin; ii < CONFIG_T::n_in; ii++) {
-      #pragma HLS unroll
-            Accum[jj] = Accum[jj] + data[ii] * weights[ii*CONFIG_T::n_out+jj];
-              }
-          }
+      Product3:if (CONFIG_T::n_in & 1) {
+          fixed_toint(sampa1, data[roundin]);
+          fixed_toint(sampb1, weights[roundin*CONFIG_T::n_out+jj]);
+          Accum[jj] = __builtin_mac16x2(sampa1, 0, sampb1, 0, Accum[jj], clear, ap_clk_div2);
+        }
+    }
 
     // Initialize accumulator with input biases
     ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
