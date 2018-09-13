@@ -24,79 +24,6 @@
 #include "hls_stream.h"
 #include <math.h>
 
-
-#ifdef __MTPUMPING__
-#include "dsp_builtins.h"
-#pragma SDS data access_pattern(a:SEQUENTIAL, b:SEQUENTIAL)
-#include <bitset>
-#define MBIT 32
-#define NBIT 16
-#define IBIT 4
-
-inline ap_fixed<NBIT, IBIT> int32_tofixed(int32_t inp) {
-  ap_int<MBIT> shiftbit (inp >> (NBIT-IBIT));
-  ap_fixed<NBIT, IBIT> fixed_result(0);
-
-#ifdef __OVERFLOW__
-  bool debug=false;
-  // Number of bit won't be interpreted
-  static const unsigned int L = (MBIT - (NBIT-IBIT)) - NBIT;
-  // Testing overflow bits
-  static const unsigned int testvalue = ((1<<L) - 1 ) << (NBIT-1);
-  static const unsigned int maxint = (((1<<(IBIT-1)) - 1)<< (NBIT-IBIT)) ; // Keep one for sign
-  static const unsigned int fixsignb = 1<<(NBIT-1);
-  static const unsigned int getdecimal = (1<<(NBIT-IBIT))-1;
-
-  bool isneg =inp & (1<<(MBIT-1));
-
-  if (debug)
-  {
-    const int b = 32 -(NBIT-IBIT);
-    std::cout << "input " << std::bitset<32>(inp) << std::endl;
-    std::cout << "shifted  " << std::bitset<b>(shiftbit) << std::endl;
-    std::cout << "testvalue" << std::bitset<b>(testvalue) << std::endl;
-    std::cout << "maxvalue " << std::bitset<b>(maxint) << std::endl;
-    std::cout << "size bit " << std::bitset<b>(1<<(NBIT-1)) << std::endl;
-    std::cout << "decimal  " << std::bitset<b>(getdecimal) << std::endl;
-  }
-
-  bool isover = false;
-  if (isneg)
-  {
-    //assuming twos complement notation 
-    isover = (~(shiftbit-1)) & testvalue;
-  }
-  else isover = shiftbit & testvalue;
-
-  //std::cout << "isneg " << isneg <<" isover " << isover << std::endl;
-  if (isover)
-  {
-    int decimalbit = shiftbit & getdecimal;
-    if (isneg)
-      shiftbit = (1 << (NBIT-1)) | decimalbit;
-    else
-      shiftbit = maxint | decimalbit;
-
-    if(debug)
-    {
-      ap_fixed<NBIT, IBIT> temp;
-      temp.range(NBIT-1, 0) = shiftbit;
-      std::cout << "decimal bit  " << std::bitset<NBIT>(decimalbit) <<"  value " << temp<< std::endl;
-    }
-  }
-#endif
-
-  //Obtain the last bit
-  fixed_result.range(NBIT-1, 0) = shiftbit;
-  return fixed_result;
-}
-
-inline void fixed_toint(ap_int<NBIT> &to, ap_fixed<NBIT, IBIT> from) {
-  to = from.V;
-  //to = from.range(NBIT-1, 0);
-}
-#endif
-
 namespace nnet {
 
 struct layer_config
@@ -174,24 +101,24 @@ void compute_layer(
         if (CONFIG_T::io_type == io_serial){
             #pragma HLS UNROLL
         }
-        Accum[iacc] = 0;
+        int32_t temp = biases[iacc].V;
+        Accum[iacc]  = (temp << (NBIT-IBIT));
     }
 
-//#pragma HLS array_partition variable=data complete dim=1
 #pragma HLS array_partition variable=weights complete dim=1
 #pragma HLS array_partition variable=Accum complete dim=1
  
-    bool clear = 0;
-    bool ap_clk_div2=0;
+    const bool clear = 0;
+    const bool ap_clk_div2=0;
     ap_int<16> sampa1 =0;
     ap_int<16> sampa2 =0;
     ap_int<16> sampb1 =0;
     ap_int<16> sampb2 =0;
+    const unsigned int roundin = (CONFIG_T::n_in >> 1 << 1);
 
     Product1: for(int jj = 0; jj < CONFIG_T::n_out; jj++) {
       #pragma HLS pipeline
       // Round in the in size for multipumping
-      unsigned int roundin = (CONFIG_T::n_in >> 1 << 1);
     Product2: for(int ii = 0; ii < roundin; ii+=2) {
       #pragma HLS unroll
             fixed_toint(sampa1, data[ii]);
@@ -211,28 +138,13 @@ void compute_layer(
         }
     }
 
-    // Initialize accumulator with input biases
-    ResetAccum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
-        if (CONFIG_T::io_type == io_serial){
-            #pragma HLS UNROLL
-        }
-        acc[iacc] = (typename CONFIG_T::accum_t) biases[iacc];
-    }
-
-    Accum: for(int iacc = 0; iacc < CONFIG_T::n_out; iacc++) {
-        if (CONFIG_T::io_type == io_serial){
-            #pragma HLS UNROLL
-        }
-        acc[iacc] += int32_tofixed(Accum[iacc]);
-    }
-
 
     // Cast to "res_t" type
     Result: for(int ires = 0; ires < CONFIG_T::n_out; ires++){
         if (CONFIG_T::io_type == io_serial){
             #pragma HLS UNROLL
         }
-        res[ires] = (res_T) (acc[ires]);
+        res[ires] = int32_tofixed(Accum[ires]);
     }    
 
 #else

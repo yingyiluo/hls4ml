@@ -91,6 +91,65 @@ void compute_sublayer(
         #pragma HLS STREAM variable=acc depth=1
     }
     
+
+#ifdef __MTPUMPING__
+    // Initialize accumulator with input biases
+    int32_t Accum[CONFIG_T::n_sub_out];
+    SetAccum: for(int iacc = 0; iacc < CONFIG_T::n_sub_out; iacc++) {
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        int bindex = iacc+CONFIG_T::i_sub_out;
+        int32_t temp = biases[bindex].V;
+        Accum[iacc]  = (temp << (NBIT-IBIT));
+    }
+
+#pragma HLS array_partition variable=weights complete dim=1
+#pragma HLS array_partition variable=Accum complete dim=1
+ 
+    const bool clear = 0;
+    const bool ap_clk_div2=0;
+    ap_int<16> sampa1 =0;
+    ap_int<16> sampa2 =0;
+    ap_int<16> sampb1 =0;
+    ap_int<16> sampb2 =0;
+    const unsigned int roundin = (CONFIG_T::n_in >> 1 << 1);
+
+    Product1: for(int jj = 0; jj < CONFIG_T::n_sub_out; jj++) {
+      #pragma HLS pipeline
+      // Round in the in size for multipumping
+    Product2: for(int ii = 0; ii < roundin; ii+=2) {
+      #pragma HLS unroll
+            int weight_index = ii*CONFIG_T::n_out+jj+CONFIG_T::i_sub_out;
+            int weight_index2 = (ii+1)*CONFIG_T::n_out+jj+CONFIG_T::i_sub_out;
+            fixed_toint(sampa1, data[ii]);
+            fixed_toint(sampa2, data[ii+1]);
+            fixed_toint(sampb1, weights[weight_index]);
+            fixed_toint(sampb2, weights[weight_index2]);
+            if (sampb1 == 0 && sampb2 == 0)
+              continue;
+            Accum[jj] = __builtin_mac16x2(sampa1, sampa2, sampb1, sampb2, Accum[jj], clear, ap_clk_div2);
+        }
+
+      // In case odd number, calculate the rest with DSP
+      Product3:if (CONFIG_T::n_in & 1) {
+          fixed_toint(sampa1, data[roundin]);
+          int weight_index = roundin*CONFIG_T::n_out+jj+CONFIG_T::i_sub_out;
+          fixed_toint(sampb1, weights[weight_index]);
+          Accum[jj] = __builtin_mac16x2(sampa1, 0, sampb1, 0, Accum[jj], clear, ap_clk_div2);
+        }
+    }
+
+
+    // Cast to "res_t" type
+    Result: for(int ires = 0; ires < CONFIG_T::n_sub_out; ires++){
+        if (CONFIG_T::io_type == io_serial){
+            #pragma HLS UNROLL
+        }
+        res[ires] = int32_tofixed(Accum[ires]);
+    }    
+
+#else
     // Do the matrix-multiply
     Product1: for(int ii = 0; ii < CONFIG_T::n_in; ii++) {
         if (CONFIG_T::io_type == io_serial){
@@ -135,6 +194,7 @@ void compute_sublayer(
         }
         res[ires] = (res_T) (acc[ires]);
     }    
+#endif
 }
 
 template<class data_T, int NIN1, int NIN2>
