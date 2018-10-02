@@ -1,0 +1,39 @@
+================================================================
+  Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC
+  Version 2017.2
+  Build 1909853 on Thu Jun 15 18:55:24 MDT 2017
+  Copyright (C) 1986-2017 Xilinx, Inc. All Rights Reserved.
+================================================================
+INFO: [HLS 200-10] Running '/opt/local/Xilinx/Vivado_HLS/2017.2/bin/unwrapped/lnx64.o/vivado_hls'
+INFO: [HLS 200-10] For user 'kreis' on host 'correlator2.fnal.gov' (Linux_x86_64 version 3.10.0-862.3.3.el7.x86_64) on Fri Sep 28 16:48:19 CDT 2018
+INFO: [HLS 200-10] On os "Scientific Linux release 7.5 (Nitrogen)"
+INFO: [HLS 200-10] In directory '/home/kreis/sergo_twoAct/hls4ml/keras-to-hls/my-hls-test-modified'
+INFO: [HLS 200-10] Opening and resetting project '/home/kreis/sergo_twoAct/hls4ml/keras-to-hls/my-hls-test-modified/myproject_prj'.
+INFO: [HLS 200-10] Adding design file 'firmware/myproject.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'myproject_test.cpp' to the project
+INFO: [HLS 200-10] Adding test bench file 'firmware/weights' to the project
+INFO: [HLS 200-10] Opening and resetting solution '/home/kreis/sergo_twoAct/hls4ml/keras-to-hls/my-hls-test-modified/myproject_prj/solution1'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+ERROR: [HLS 200-101] 'config_array_partition': Unknown option '-maximum_size'.
+ERROR: [HLS 200-101] 'config_array_partition': Unknown option '4096'.
+
+FORMAT
+  config_array_partition [OPTIONS]
+    -auto_partition_threshold <int> (default: 4)
+    -auto_promotion_threshold <int> (default: 64)
+    -include_extern_globals
+    -include_ports
+    -scalarize_all
+    -throughput_driven
+
+INFO: [HLS 200-10] Setting target device to 'xcku115-flvb2104-2-i'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 5ns.
+***** C SIMULATION *****
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../myproject_test.cpp in debug mode
+   Compiling ../../../../firmware/myproject.cpp in debug mode
+   Generating csim.exe
+-27.0576 0.00292969 
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
