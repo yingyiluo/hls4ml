@@ -226,7 +226,10 @@ def hls_writer(layer_list, yamlConfig):
 
                     if layer_list[i-1]['n_part']==1 or yamlConfig["IOType"]=="io_serial":
                         # Use one layer if there's only 1 partition, or if we're using serial mode
-                        newline += '    nnet::compute_layer<{}, {}, config{}>({}, logits{}, w{}, b{});\n'.format(input_type, output_type, i, input_object, i, i, i, i)
+                        if yamlConfig["Compression"] == 0:
+                            newline += '    nnet::compute_layer<{}, {}, config{}>({}, logits{}, w{}, b{});\n'.format(input_type, output_type, i, input_object, i, i, i, i)
+                        else:
+                            newline += '    nnet::compute_compressed_layer<{}, {}, config{}>({}, logits{}, w{}, b{});\n'.format(input_type, output_type, i, input_object, i, i, i, i)
                     else:
                         # initialize arrays for sublayer outputs
                         newline += '    compute_layer{}({}, logits{});\n'.format(i, input_object, i)
@@ -376,17 +379,19 @@ def hls_writer(layer_list, yamlConfig):
 
     f = open(os.path.join(filedir,'../hls-template/firmware/parameters.h'),'r')
     fout = open('{}/firmware/parameters.h'.format(yamlConfig['OutputDir']),'w')
-
     dense_config_template = """struct config{index} : nnet::layer_config {{
         static const unsigned n_in = {n_in};
         static const unsigned n_out = {n_out};
         static const unsigned io_type = nnet::{iotype};
         static const unsigned reuse_factor = {reuse};
         static const unsigned n_zeros = {nzeros};
+        static const unsigned n_nonzeros = {n_in} * {n_out} - {nzeros};
         static const bool store_weights_in_bram = false;
         typedef accum_default_t accum_t;
         typedef bias_default_t bias_t;
         typedef weight_default_t weight_t;
+        typedef index_default_t index_t;
+        typedef compressed_weight_default_t compressed_weight_t;
         }};\n"""
 
     dense_sub_config_template = """struct config{index}_{i_part} : nnet::layer_config {{
@@ -471,6 +476,8 @@ def hls_writer(layer_list, yamlConfig):
             newline += 'typedef {precision} bias_default_t;\n'.format(precision=yamlConfig["DefaultPrecision"])
             newline += 'typedef {precision} input_t;\n'.format(precision=yamlConfig["DefaultPrecision"])
             newline += 'typedef {precision} result_t;\n'.format(precision=yamlConfig["DefaultPrecision"])
+            newline += 'typedef ap_uint<{precision}> index_default_t;\n'.format(precision=yamlConfig["MaxIndexWordSize"])
+            newline += 'typedef struct compressed_weight_default_t { index_default_t index; weight_default_t weight; } compressed_weight_default_t;\n'
             if do_batchnorm:
              newline += 'typedef {precision} beta_default_t;\n'.format(precision=yamlConfig["DefaultPrecision"])
              newline += 'typedef {precision} mean_default_t;\n'.format(precision=yamlConfig["DefaultPrecision"])
@@ -845,6 +852,54 @@ def print_array_to_cpp(name, a, odir, i_part = 0, n_part = 1, i_subout = 0, n_su
         else:
             f.write(", %.12f" % x)
         i=i+1
+    f.write("};\n")
+    f.close()
+
+    return zero_ctr
+
+#################################################
+## Print a compressed bias or weight array to C++
+#################################################
+def print_compressed_array_to_cpp(name, a, odir ):
+
+    # count zeros
+    zero_ctr = 0
+    for x in np.nditer(a, order='C'):
+        if x == 0:
+            zero_ctr += 1
+    # count non zeros
+    nonzero_ctr = np.prod(a.shape) - zero_ctr
+
+    #put output in subdir for tarballing later
+    f=open("{}/firmware/weights/{}.h".format(odir,name),"w")
+
+    #meta data
+    f.write("//Numpy array shape {}\n".format(a.shape))
+    f.write("//Min {:.12f}\n".format(np.min(a)))
+    f.write("//Max {:.12f}\n".format(np.max(a)))
+    f.write("//Number of zeros {}\n".format(zero_ctr))
+    f.write("\n")
+
+    #c++ variable
+    if "w" in name:
+        f.write("compressed_weight_default_t {}".format(name))
+    else:
+        raise Exception('ERROR: Unkown weights type')
+    f.write("[{}]".format(nonzero_ctr))
+    f.write(" = {")
+
+    # fill c++ array.
+    first_element = 1
+    i = 0
+    for x in np.nditer(a):
+        if first_element == 1:
+            if x != 0:
+                f.write("{ %u, %.12f }" % (i, x))
+                first_element=0
+        else:
+            if x != 0:
+                f.write(", { %u, %.12f }" % (i, x))
+        i = i + 1
     f.write("};\n")
     f.close()
 
