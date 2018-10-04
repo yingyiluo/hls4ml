@@ -91,7 +91,7 @@ def hls_writer(layer_list, yamlConfig):
         elif '//hls-fpga-machine-learning insert layers' in line:
             newline = line + '\n'
             for i in range(1,len(layer_list)+1):
-                
+
                 #Input to compute_layer
 
                 #First layer and dense
@@ -160,7 +160,7 @@ def hls_writer(layer_list, yamlConfig):
 
 
                 #Outputs of compute_layer and activation 
-                if i==len(layer_list) and layer_list[i-1]['class_name']=='Dense':
+                if(i==len(layer_list) and layer_list[i-1]['class_name']=='Dense'):
                     output_type = 'result_t'
                     output_object = 'res'
                     n_out = 'N_OUTPUTS'
@@ -223,7 +223,7 @@ def hls_writer(layer_list, yamlConfig):
                     newline += '    {} logits{}[{}];\n'.format(output_type,i,n_out)
                     if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=logits{} complete dim=0\n'.format(i)
                     if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=logits{} depth=1\n'.format(i)
-                    
+
                     if layer_list[i-1]['n_part']==1 or yamlConfig["IOType"]=="io_serial":
                         # Use one layer if there's only 1 partition, or if we're using serial mode
                         newline += '    nnet::compute_layer<{}, {}, config{}>({}, logits{}, w{}, b{});\n'.format(input_type, output_type, i, input_object, i, i, i, i)
@@ -235,14 +235,14 @@ def hls_writer(layer_list, yamlConfig):
                         sublayerlines_h.append(sublayerline_h)
                         for i_part in range(0, layer_list[i-1]['n_part']):
                             n_subout = layer_list[i-1]['n_subout'][i_part]
-                            sublayerline += '    {} logits{}_{}[{}];\n'.format(output_type,i,i_part,n_subout)                        
+                            sublayerline += '    {} logits{}_{}[{}];\n'.format(output_type,i,i_part,n_subout)
                             if yamlConfig["IOType"] == "io_parallel": sublayerline += '    #pragma HLS ARRAY_PARTITION variable=logits{}_{} complete dim=0\n'.format(i,i_part)
                             if yamlConfig["IOType"] == "io_serial":   sublayerline += '    #pragma HLS STREAM variable=logits{}_{} depth=1\n'.format(i,i_part)
 
-                        # initialize arrays for merged partial outputs 
+                        # initialize arrays for merged partial outputs
                         for i_part in range(1, layer_list[i-1]['n_part']-1):
                             n_mergeout = sum([layer_list[i-1]['n_subout'][kk] for kk in range(0, i_part+1)])
-                            sublayerline += '    {} logits{}_0to{}[{}];\n'.format(output_type,i,i_part,n_mergeout)                        
+                            sublayerline += '    {} logits{}_0to{}[{}];\n'.format(output_type,i,i_part,n_mergeout)
                             if yamlConfig["IOType"] == "io_parallel": sublayerline += '    #pragma HLS ARRAY_PARTITION variable=logits{}_0to{} complete dim=0\n'.format(i,i_part)
                             if yamlConfig["IOType"] == "io_serial":   sublayerline += '    #pragma HLS STREAM variable=logits{}_0to{} depth=1\n'.format(i,i_part)
                         # compute sublayer outputs
@@ -255,7 +255,7 @@ def hls_writer(layer_list, yamlConfig):
                             n_mergeout = sum([layer_list[i-1]['n_subout'][kk] for kk in range(0, i_part+1)])
                             if layer_list[i-1]['n_part']==2:
                                 sublayerline += '    nnet::merge<{}, {}, {}>(logits{}_{}, logits{}_{}, logits{});\n'.format(output_type, n_mergeout, n_subout, i, i_part, i, i_part+1, i)
-                            elif i_part==0: 
+                            elif i_part==0:
                                 sublayerline += '    nnet::merge<{}, {}, {}>(logits{}_{}, logits{}_{}, logits{}_0to{});\n'.format(output_type, n_mergeout, n_subout, i, i_part, i, i_part+1, i, i_part+1)
                             elif i_part==layer_list[i-1]['n_part']-2:
                                 sublayerline += '    nnet::merge<{}, {}, {}>(logits{}_0to{}, logits{}_{}, logits{});\n'.format(output_type, n_mergeout, n_subout, i, i_part, i, i_part+1, i)
@@ -263,18 +263,18 @@ def hls_writer(layer_list, yamlConfig):
                                 sublayerline += '    nnet::merge<{}, {}, {}>(logits{}_0to{}, logits{}_{}, logits{}_0to{});\n'.format(output_type, n_mergeout, n_subout, i, i_part, i, i_part+1, i, i_part+1)
                         sublayerline += '}\n'
                         sublayerlines.append(sublayerline)
-                    
+
                 elif layer_list[i-1]['class_name']=='Conv1D':
                     if i>1 and layer_list[i-2]['class_name']=='Conv1D':
                         newline += '    {} conv_layer{}_in[{}][{}];\n'.format(input_type,i,y_in,n_chan)
                         if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=conv_layer{}_in complete dim=0\n'.format(i)
                         if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=conv_layer{}_in depth=1\n'.format(i)
-                        newline += '    nnet::unflatten<{}, {}, {}>({}, conv_layer{}_in);\n'.format(input_type, y_in, n_chan, input_object, i)                              
+                        newline += '    nnet::unflatten<{}, {}, {}>({}, conv_layer{}_in);\n'.format(input_type, y_in, n_chan, input_object, i)
                         newline += '    {} conv_layer{}_out[{}][{}];\n'.format(output_type,i,y_out,n_filt)
                         if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=conv_layer{}_out complete dim=0\n'.format(i)
                         if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=conv_layer{}_out depth=1\n'.format(i)
-                        newline += '    nnet::conv_1d<{}, {}, config{}>(conv_layer{}_in, conv_layer{}_out, w{}, b{});\n'.format(input_type, output_type, i, i, i, i, i, i)  
-                    else:                        
+                        newline += '    nnet::conv_1d<{}, {}, config{}>(conv_layer{}_in, conv_layer{}_out, w{}, b{});\n'.format(input_type, output_type, i, i, i, i, i, i)
+                    else:
                         newline += '    {} conv_layer{}_out[{}][{}];\n'.format(output_type,i,y_out,n_filt)
                         if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=conv_layer{}_out complete dim=0\n'.format(i)
                         if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=conv_layer{}_out depth=1\n'.format(i)
@@ -288,12 +288,12 @@ def hls_writer(layer_list, yamlConfig):
                         newline += '    {} conv2d_layer{}_in[{}][{}][{}];\n'.format(input_type,i,in_height,in_width,n_chan)
                         if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=conv2d_layer{}_in complete dim=0\n'.format(i)
                         if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=conv2d_layer{}_in depth=1\n'.format(i)
-                        newline += '    nnet::unflatten<{}, {}, {}, {}>({}, conv2d_layer{}_in);\n'.format(input_type, in_height, in_width, n_chan, input_object, i)                              
+                        newline += '    nnet::unflatten<{}, {}, {}, {}>({}, conv2d_layer{}_in);\n'.format(input_type, in_height, in_width, n_chan, input_object, i)
                         newline += '    {} conv2d_layer{}_out[{}][{}][{}];\n'.format(output_type,i,out_height,out_width,n_filt)
                         if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=conv2d_layer{}_out complete dim=0\n'.format(i)
                         if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=conv2d_layer{}_out depth=1\n'.format(i)
-                        newline += '    nnet::conv_2d<{}, {}, config{}>(conv2d_layer{}_in, conv2d_layer{}_out, w{}, b{});\n'.format(input_type, output_type, i, i, i, i, i, i)  
-                    else:                        
+                        newline += '    nnet::conv_2d<{}, {}, config{}>(conv2d_layer{}_in, conv2d_layer{}_out, w{}, b{});\n'.format(input_type, output_type, i, i, i, i, i, i)
+                    else:
                         newline += '    {} conv2d_layer{}_out[{}][{}][{}];\n'.format(output_type,i,out_height,out_width,n_filt)
                         if yamlConfig["IOType"] == "io_parallel": newline += '    #pragma HLS ARRAY_PARTITION variable=conv2d_layer{}_out complete dim=0\n'.format(i)
                         if yamlConfig["IOType"] == "io_serial":   newline += '    #pragma HLS STREAM variable=conv2d_layer{}_out depth=1\n'.format(i)
@@ -360,7 +360,7 @@ def hls_writer(layer_list, yamlConfig):
                 newline += '\n'
 
         #Just copy line
-        else: 
+        else:
             newline = line
         fout.write(newline)
     for sublayerline in sublayerlines:
@@ -451,8 +451,8 @@ def hls_writer(layer_list, yamlConfig):
         typedef bias_default_t bias_t;
         typedef weight_default_t weight_t;
         }};\n"""
-    
-    
+
+
 
     activ_config_template = """struct {type}_config{index} : nnet::activ_config {{
         static const unsigned n_in = {n_in};
@@ -555,7 +555,7 @@ def hls_writer(layer_list, yamlConfig):
                     layer_out_name = "N_OUTPUTS"
                 elif layer_list[i-1]['class_name']=='Dense' and layer_list[i-2]['class_name']=='Conv1D':
                     layer_in_name = "Y_OUTPUTS_{}*N_FILT_{}".format(i-1, i-1)
-                    layer_out_name = "N_LAYER_{}".format(i)   
+                    layer_out_name = "N_LAYER_{}".format(i)
                 elif layer_list[i-1]['class_name']=='Dense' and layer_list[i-2]['class_name']=='Conv2D':
                     layer_in_name = "OUT_HEIGHT_{}*OUT_WIDTH_{}*N_FILT_{}".format(i-1, i-1, i-1)
                     layer_out_name = "N_LAYER_{}".format(i)   
@@ -584,8 +584,8 @@ def hls_writer(layer_list, yamlConfig):
                     layer_n_filt_name = "N_FILT_{}".format(i-1)
                 if layer_list[i-1]['class_name']=='Dense':
                     if layer_list[i-1]['n_part']==1:
-                        newline += dense_config_template.format(index=str(i), 
-                                                                n_in=layer_in_name, 
+                        newline += dense_config_template.format(index=str(i),
+                                                                n_in=layer_in_name,
                                                                 n_out=layer_out_name,
                                                                 iotype=yamlConfig["IOType"],
                                                                 reuse=yamlConfig["ReuseFactor"],
@@ -593,7 +593,6 @@ def hls_writer(layer_list, yamlConfig):
                     else:
                         for i_part in range(0, layer_list[i-1]['n_part']):
                             newline += dense_sub_config_template.format(index=str(i),
-                                                                        i_part=i_part,
                                                                         n_in=layer_in_name,
                                                                         n_out=layer_list[i-1]['n_subout'][i_part],
                                                                         iotype=yamlConfig["IOType"],
@@ -601,7 +600,7 @@ def hls_writer(layer_list, yamlConfig):
                                                                         nzeros=layer_list[i-1]['weights_n_subzeros'][i_part])
 
                     newline += activ_config_template.format(type=layer_list[i-1]['activation'],
-                                                                    index=str(i), 
+                                                                    index=str(i),
                                                                     n_in=layer_out_name,
                                                                     iotype=yamlConfig["IOType"]) 
                 elif layer_list[i-1]['class_name']=='BatchNormalization':
@@ -615,11 +614,10 @@ def hls_writer(layer_list, yamlConfig):
                     newline += activ_config_template.format(type=layer_list[i-1]['activation'],
                                                                     index=str(i), 
                                                                     n_in=layer_out_name,
-                                                                    iotype=yamlConfig["IOType"]) 
- 
+                                                                    iotype=yamlConfig["IOType"])
                 elif layer_list[i-1]['class_name']=='Conv1D':
-                    newline += conv_config_template.format(index=str(i), 
-                                                            pad_left=layer_list[i-1]['pad_left'], 
+                    newline += conv_config_template.format(index=str(i),
+                                                            pad_left=layer_list[i-1]['pad_left'],
                                                             pad_right=layer_list[i-1]['pad_right'],
                                                             y_in=layer_y_in_name,
                                                             n_chan=layer_n_chan_name,
@@ -632,15 +630,15 @@ def hls_writer(layer_list, yamlConfig):
                                                             nzeros=layer_list[i-1]['weights_n_zeros'])
 
                     newline += activ_config_template.format(type=layer_list[i-1]['activation'],
-                                                                    index=str(i), 
+                                                                    index=str(i),
                                                                     n_in='{}*{}'.format(layer_y_out_name,layer_n_filt_name),
-                                                                    iotype=yamlConfig["IOType"]) 
+                                                                    iotype=yamlConfig["IOType"])
 
                 elif layer_list[i-1]['class_name']=='Conv2D':
-                    newline += conv2d_config_template.format(index=str(i), 
-                                                            pad_top=layer_list[i-1]['pad_top'], 
+                    newline += conv2d_config_template.format(index=str(i),
+                                                            pad_top=layer_list[i-1]['pad_top'],
                                                             pad_bottom=layer_list[i-1]['pad_bottom'],
-                                                            pad_left=layer_list[i-1]['pad_left'], 
+                                                            pad_left=layer_list[i-1]['pad_left'],
                                                             pad_right=layer_list[i-1]['pad_right'],
                                                             in_height=layer_in_height_name,
                                                             in_width=layer_in_width_name,
@@ -657,9 +655,9 @@ def hls_writer(layer_list, yamlConfig):
                                                             nzeros=layer_list[i-1]['weights_n_zeros'])
 
                     newline += activ_config_template.format(type=layer_list[i-1]['activation'],
-                                                                    index=str(i), 
+                                                                    index=str(i),
                                                                     n_in='{}*{}*{}'.format(layer_out_height_name,layer_out_width_name,layer_n_filt_name),
-                                                                    iotype=yamlConfig["IOType"]) 
+                                                                    iotype=yamlConfig["IOType"])
 
         else:
             newline = line
@@ -803,7 +801,7 @@ def print_array_to_cpp(name, a, odir, i_part = 0, n_part = 1, i_subout = 0, n_su
     #count zeros
     zero_ctr = 0
     for x in np.nditer(a, order='C'):
-        if x == 0: 
+        if x == 0:
             zero_ctr += 1
 
     #meta data
@@ -812,7 +810,7 @@ def print_array_to_cpp(name, a, odir, i_part = 0, n_part = 1, i_subout = 0, n_su
     f.write("//Max {:.12f}\n".format(np.max(a)))
     f.write("//Number of zeros {}\n".format(zero_ctr))
     f.write("\n")
-    
+
     #c++ variable
     if re.match(r"^w\d*$", name) or re.match(r"^a\d*$", name):
         if n_part > 1:
@@ -837,8 +835,8 @@ def print_array_to_cpp(name, a, odir, i_part = 0, n_part = 1, i_subout = 0, n_su
     #also doing for all (including 2d) arrays now
     f.write("[{}]".format(np.prod(a.shape)))
     f.write(" = {")
-    
-    #fill c++ array.  
+
+    #fill c++ array.
     #not including internal brackets for multidimensional case
     i=0
     for x in np.nditer(a, order='C'):

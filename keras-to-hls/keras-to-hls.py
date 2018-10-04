@@ -61,7 +61,7 @@ def main():
     if not os.path.isabs(yamlConfig['KerasJson']):
         yamlConfig['KerasJson'] = os.path.join(configDir, yamlConfig['KerasJson'])
 
-    if not (yamlConfig["IOType"] == "io_parallel" or yamlConfig["IOType"] == "io_serial"): 
+    if not (yamlConfig["IOType"] == "io_parallel" or yamlConfig["IOType"] == "io_serial"):
         raise Exception('ERROR: Invalid IO type')
 
     ######################
@@ -85,7 +85,7 @@ def main():
     activation_layers = ['Activation', 'LeakyReLU', 'ThresholdedReLU', 'ELU', 'PReLU']
 
     #Define layers to skip for conversion to HLS
-    skip_layers = ['InputLayer','Dropout', 'Flatten'] 
+    skip_layers = ['InputLayer','Dropout', 'Flatten']
 
     #Loop through layers
     layer_counter = 0
@@ -105,7 +105,7 @@ def main():
         if keras_layer["class_name"] not in supported_layers + activation_layers:
             raise Exception('ERROR: Unsupported layer type: {}'.format(keras_layer["class_name"]))
         if 'batch_input_shape' in keras_layer['config']:
-            current_shape = keras_layer['config']['batch_input_shape'] # [None, 100, 7]    
+            current_shape = keras_layer['config']['batch_input_shape'] # [None, 100, 7]
     print('Input shape:', current_shape)
 
     # Set some variables to make the routine after a bit smoother
@@ -124,7 +124,7 @@ def main():
         if keras_layer["class_name"] is 'Flatten':
             current_shape = [current_shape[0], np.prod(current_shape[1:])]
         if keras_layer["class_name"] in skip_layers:
-            continue 
+            continue
 
         if keras_layer["class_name"] in supported_layers + activation_layers:
             layer_counter = layer_counter + 1
@@ -181,7 +181,7 @@ def main():
         if layer['class_name']=='Dense':
             layer['n_in']=weights.shape[0]
             layer['n_out']=weights.shape[1]
-            # if this layer is too big (more than MAXMULT multiplications); 
+            # if this layer is too big (more than MAXMULT multiplications);
             # break it out into chunks!
             layer['n_subout']=[weights.shape[1]]
             if layer['n_in']*layer['n_out']>MAXMULT and yamlConfig["IOType"] != "io_serial":
@@ -193,7 +193,7 @@ def main():
                 while n_totout < layer['n_out']:
                     if n_totout + n_subout <= layer['n_out']:
                         layer['n_subout'].append(n_subout)
-                        n_totout += n_subout                    
+                        n_totout += n_subout
                     else:
                         layer['n_subout'].append(layer['n_out']-n_totout)
                         n_totout += layer['n_out']-n_totout
@@ -211,7 +211,7 @@ def main():
             # weights.shape = (filter_width, n_channels, n_filters)
             layer['y_in']=current_shape[1]
             layer['y_filt']=weights.shape[0] # or keras_layer['config']['kernel_size']
-            layer['n_chan']=weights.shape[1] 
+            layer['n_chan']=weights.shape[1]
             layer['n_filt']=weights.shape[2] # or keras_layer['config']['filters']
             layer['stride']=keras_layer['config']['strides'][0]
             layer['padding']=keras_layer['config']['padding']
@@ -268,6 +268,7 @@ def main():
                 layer['pad_bottom'] = 0
                 layer['pad_left'] = 0
                 layer['pad_right'] = 0
+
             current_shape=[current_shape[0], layer['out_height'], layer['out_width'], layer['n_filt']]
         elif layer['class_name']=='BatchNormalization':
             if is_dense:
@@ -332,11 +333,9 @@ def main():
                 print(' -> layer will be divided into {} sublayer calls; output neurons: {} '.format(layer['n_part'], layer['n_subout']))
             layer_list.append( layer )
 
-
     #################
     ## Generate HLS
     #################
-
     #Weights and biases are already dumped to output directory
     #Now generate HLS from list of layer dictionaries
     hls_writer(layer_list, yamlConfig)
