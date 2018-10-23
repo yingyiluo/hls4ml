@@ -67,15 +67,14 @@ void compute_layer(
 
         // #pragma HLS ARRAY_PARTITION variable=weights complete // remove this line for now, it breaks compression sometimes
         #pragma HLS ARRAY_PARTITION variable=biases complete
-        #pragma HLS ARRAY_PARTITION variable=mult complete
+        #pragma HLS ARRAY_PARTITION variable=mult complete // remove this to try block reshaping
         #pragma HLS ARRAY_PARTITION variable=acc complete
 
-        int cycle_factor = CONFIG_T::n_in*CONFIG_T::n_out;
-        float reused_cycle = CONFIG_T::n_out / CONFIG_T::reuse_factor;
-        if (reused_cycle == ceil(reused_cycle) && CONFIG_T::store_weights_in_bram){
+        // int block_factor = CONFIG_T::n_in*CONFIG_T::n_out/CONFIG_T::reuse_factor;
+        // #pragma HLS ARRAY_RESHAPE variable=weights block factor=block_factor
+        // #pragma HLS ARRAY_RESHAPE variable=mult block factor=block_factor	
+	if (CONFIG_T::store_weights_in_bram){
             // Dont use "ceil" here; as of 2018.2, HLS crashes mysteriously
-            cycle_factor = cycle_factor / CONFIG_T::reuse_factor;
-            #pragma HLS ARRAY_RESHAPE variable=weights block factor=cycle_factor
             #pragma HLS RESOURCE variable=weights core=ROM_2P_BRAM
         }
 
@@ -93,6 +92,7 @@ void compute_layer(
         }
         #pragma HLS ARRAY_PARTITION variable=weights cyclic factor=cycle_factor
         #pragma HLS ARRAY_PARTITION variable=mult cyclic factor=cycle_factor
+	
         #pragma HLS ARRAY_PARTITION variable=acc complete
         #pragma HLS DATAFLOW
         #pragma HLS STREAM variable=mult depth=1
