@@ -89,11 +89,11 @@ def main():
         layer["activation"] = modelstr[i+1].split(":")[-1].strip().lower()[:-2]
 
         # Translate weights and biases from tensorfile
-        weights = modeldict[Nlayer+".weight"].numpy().transpose()
-        biases  = modeldict[Nlayer+".bias"].numpy().transpose()
-        cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), weights, yamlConfig['OutputDir'])
-        print_array_to_cpp("b{}".format(layer_counter), biases, yamlConfig['OutputDir'])
-        layer['weights_n_zeros'] = cur_n_zeros
+        layer["weights"] = modeldict[Nlayer+".weight"].numpy().transpose()
+        layer["biases"] = modeldict[Nlayer+".bias"].numpy().transpose()
+        # cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), weights, yamlConfig['OutputDir'])
+        # print_array_to_cpp("b{}".format(layer_counter), biases, yamlConfig['OutputDir'])
+        # layer['weights_n_zeros'] = 0
 
         layer_list.append(layer)
 

@@ -6,9 +6,42 @@ import numpy as np
 import os
 import re
 
+MAXMULT = 4096
+
 def hls_writer(layer_list, yamlConfig):
 
     filedir = os.path.dirname(os.path.abspath(__file__))
+#============================================================================#
+#---------------------     Writing out weight files     ---------------------#
+#============================================================================#
+    for layer_counter, layer in enumerate(layer_list, 1):
+        if layer['class_name']=='Dense':
+            if layer['n_in']*layer['n_out']>MAXMULT and yamlConfig["IOType"] != "io_serial":
+                n_subout = int(MAXMULT/layer['n_in'])
+                n_totout = 0
+                layer['n_subout'] = []
+                layer['weights_n_subzeros'] = []
+                layer['n_part'] = 0
+                while n_totout < layer['n_out']:
+                    if n_totout + n_subout <= layer['n_out']:
+                        layer['n_subout'].append(n_subout)
+                        n_totout += n_subout                    
+                    else:
+                        layer['n_subout'].append(layer['n_out']-n_totout)
+                        n_totout += layer['n_out']-n_totout
+                    layer['n_part'] += 1
+                for i_part in range(0,layer['n_part']):
+                    i_subout = 0
+                    if i_part>0:
+                        i_subout = sum(layer['n_subout'][0:i_part])
+                    cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), layer["weights"], yamlConfig['OutputDir'], i_part, layer['n_part'], i_subout, layer['n_subout'][i_part])
+                    print_array_to_cpp("b{}".format(layer_counter), layer["biases"], yamlConfig['OutputDir'], i_part, layer['n_part'], i_subout, layer['n_subout'][i_part])
+                    layer['weights_n_subzeros'].append(cur_n_zeros)
+            else:
+                cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), layer['weights'], yamlConfig['OutputDir'])
+                print_array_to_cpp("b{}".format(layer_counter), layer['biases'], yamlConfig['OutputDir'])
+                layer['weights_n_zeros'] = cur_n_zeros
+        # print(layer_counter, layer["class_name"], layer['n_part'])
 
     ###################
     ## myproject.cpp

@@ -150,8 +150,10 @@ def main():
         if layer['class_name'] != 'BatchNormalization' and layer['class_name'] not in activation_layers:
             found_weights = h5File[layer['name']].visit(find_kernel_in_h5)
             weights = h5File['/{}/{}'.format(layer['name'],found_weights)][()]
+            layer["weights"] = weights
             found_bias = h5File[layer['name']].visit(find_bias_in_h5)
             biases = h5File['/{}/{}'.format(layer['name'],found_bias)][()]
+            layer["biases"] = biases
             cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), weights, yamlConfig['OutputDir'])
             print_array_to_cpp("b{}".format(layer_counter), biases, yamlConfig['OutputDir'])
             layer['weights_n_zeros'] = cur_n_zeros
@@ -184,27 +186,6 @@ def main():
             # if this layer is too big (more than MAXMULT multiplications); 
             # break it out into chunks!
             layer['n_subout']=[weights.shape[1]]
-            if layer['n_in']*layer['n_out']>MAXMULT and yamlConfig["IOType"] != "io_serial":
-                n_subout = int(MAXMULT/layer['n_in'])
-                n_totout = 0
-                layer['n_subout'] = []
-                layer['weights_n_subzeros'] = []
-                layer['n_part'] = 0
-                while n_totout < layer['n_out']:
-                    if n_totout + n_subout <= layer['n_out']:
-                        layer['n_subout'].append(n_subout)
-                        n_totout += n_subout                    
-                    else:
-                        layer['n_subout'].append(layer['n_out']-n_totout)
-                        n_totout += layer['n_out']-n_totout
-                    layer['n_part'] += 1
-                for i_part in range(0,layer['n_part']):
-                    i_subout = 0
-                    if i_part>0:
-                        i_subout = sum(layer['n_subout'][0:i_part])
-                    cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), weights, yamlConfig['OutputDir'], i_part, layer['n_part'], i_subout, layer['n_subout'][i_part])
-                    print_array_to_cpp("b{}".format(layer_counter), biases, yamlConfig['OutputDir'], i_part, layer['n_part'], i_subout, layer['n_subout'][i_part])
-                    layer['weights_n_subzeros'].append(cur_n_zeros)
             
             current_shape = [current_shape[0], layer['n_out']]
         elif layer['class_name']=='Conv1D':
