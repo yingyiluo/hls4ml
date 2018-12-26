@@ -151,7 +151,10 @@ def main():
             found_weights = h5File[layer['name']].visit(find_kernel_in_h5)
             weights = h5File['/{}/{}'.format(layer['name'],found_weights)][()]
             found_bias = h5File[layer['name']].visit(find_bias_in_h5)
-            biases = h5File['/{}/{}'.format(layer['name'],found_bias)][()]
+            if(found_bias==None):
+                biases = np.zeros(weights.shape[1]) #at least works for dense
+            else:
+                biases = h5File['/{}/{}'.format(layer['name'],found_bias)][()]
             cur_n_zeros = print_array_to_cpp("w{}".format(layer_counter), weights, yamlConfig['OutputDir'])
             print_array_to_cpp("b{}".format(layer_counter), biases, yamlConfig['OutputDir'])
             layer['weights_n_zeros'] = cur_n_zeros
@@ -159,7 +162,10 @@ def main():
             cur_n_zeros = []
             layer['weights_n_zeros'] = cur_n_zeros 
             found_beta = h5File[layer['name']].visit(find_beta_in_h5)
-            beta = h5File['/{}/{}'.format(layer['name'],found_beta)][()]
+            if(found_beta==None):
+                beta = np.zeros(weights.shape[1]) #at least works for dense
+            else:
+                beta = h5File['/{}/{}'.format(layer['name'],found_beta)][()]
             print_array_to_cpp("beta{}".format(layer_counter), beta, yamlConfig['OutputDir'])
             found_mean = h5File[layer['name']].visit(find_moving_mean_in_h5)
             mean = h5File['/{}/{}'.format(layer['name'],found_mean)][()]

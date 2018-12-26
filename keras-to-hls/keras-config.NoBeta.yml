@@ -1,0 +1,10 @@
+KerasJson: NoBeta/model.r3.6.json
+KerasH5:   NoBeta/model_weights.r3.6.h5
+OutputDir: my-hls-test-nobeta
+ProjectName: myproject
+XilinxPart: xcku115-flvb2104-2-i
+ClockPeriod: 5
+
+IOType: io_parallel # options: io_serial/io_parallel
+ReuseFactor: 1
+DefaultPrecision: ap_fixed<16,6> 
