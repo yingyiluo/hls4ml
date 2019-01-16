@@ -53,7 +53,6 @@ struct conv2d_config
     static const unsigned n_zeros = 0; // not used yet
 };
 
-
 //Computes multiplier limit
 //This function should not be synthesized into firmware
 template<typename CONFIG_T>
@@ -63,40 +62,68 @@ template<typename CONFIG_T>
 {
     int n_mult = 0;
 
-    for(int oh = 0; oh < CONFIG_T::out_height; oh++) {
-      for(int ow = 0; ow < CONFIG_T::out_width; ow++) {
-        for(int ff = 0; ff < CONFIG_T::n_filt; ff++){
-          for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
-            for(int fh = 0; fh < CONFIG_T::filt_height; fh++){
-              for(int fw = 0; fw < CONFIG_T::filt_width; fw++){
-                    
-		int index_weight = fh*CONFIG_T::filt_width*CONFIG_T::n_chan*CONFIG_T::n_filt
-                		 + fw*CONFIG_T::n_chan*CONFIG_T::n_filt
-            		         + cc*CONFIG_T::n_filt
-         		         + ff;
-
-		if( (oh*CONFIG_T::stride_height+fh) < CONFIG_T::pad_top || (oh*CONFIG_T::stride_height+fh) >= (CONFIG_T::pad_top+CONFIG_T::in_height) 
-          	 || (ow*CONFIG_T::stride_width+fw) < CONFIG_T::pad_left || (ow*CONFIG_T::stride_width+fw) >= (CONFIG_T::pad_left+CONFIG_T::in_width)) {
-		    //padded - do nothing
-		    continue;
-                }
-		else {
-		    if( weights[index_weight] > 1e-20 || weights[index_weight] < -1e-20 ){
-			n_mult++;
-		     }
-		}
-
-              }//end mult loop
-            }//end channel loop
-	  }//end filter width loop
-        }//end filter height loop      
-      }//end output width loop
-    }//end output height loop
-
+    int total_loop = CONFIG_T::out_height*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width;
+    for(int tl = 0; tl < total_loop; tl++) {
+      int fw = tl % CONFIG_T::filt_width;
+      int fh = (tl - fw)/CONFIG_T::filt_width % (CONFIG_T::filt_height);
+      int cc = (tl - fw - fh*CONFIG_T::filt_width)/(CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::n_chan);
+      int ff = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::n_filt);
+      int ow = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width - ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::out_width);
+      int oh = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width - ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width - ow*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width);
+      int index_weight = fh*CONFIG_T::filt_width*CONFIG_T::n_chan*CONFIG_T::n_filt
+	+ fw*CONFIG_T::n_chan*CONFIG_T::n_filt
+	+ cc*CONFIG_T::n_filt
+	+ ff;
+      
+      if( (oh*CONFIG_T::stride_height+fh) < CONFIG_T::pad_top || (oh*CONFIG_T::stride_height+fh) >= (CONFIG_T::pad_top+CONFIG_T::in_height) 
+	  || (ow*CONFIG_T::stride_width+fw) < CONFIG_T::pad_left || (ow*CONFIG_T::stride_width+fw) >= (CONFIG_T::pad_left+CONFIG_T::in_width)) {
+	//padded - do nothing
+	continue;
+      }
+      else {
+	if( weights[index_weight] > 1e-20 || weights[index_weight] < -1e-20 ){
+	  n_mult++;
+	}
+      }
+    }
+    
     return ceil( float(n_mult) / float(CONFIG_T::reuse_factor) );
+    
+ }//end compute_n_mult 
 
-}//end compute_n_mult 
 
+//Duplicates weights into bigger array
+template<typename CONFIG_T>
+  void duplicate_weights(typename CONFIG_T::weight_t  weights[CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt],
+			 typename CONFIG_T::weight_t  weights_dup[CONFIG_T::out_height * CONFIG_T::out_width * CONFIG_T::filt_height * CONFIG_T::filt_width * CONFIG_T::n_chan * CONFIG_T::n_filt]
+			 )
+{
+    int total_loop = CONFIG_T::out_height*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width;
+    for(int tl = 0; tl < total_loop; tl++) {
+      int fw = tl % CONFIG_T::filt_width;
+      int fh = (tl - fw)/CONFIG_T::filt_width % (CONFIG_T::filt_height);
+      int cc = (tl - fw - fh*CONFIG_T::filt_width)/(CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::n_chan);
+      int ff = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::n_filt);
+      int ow = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width - ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::out_width);
+      int oh = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width - ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width - ow*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width);
+      int index_weight = fh*CONFIG_T::filt_width*CONFIG_T::n_chan*CONFIG_T::n_filt
+	+ fw*CONFIG_T::n_chan*CONFIG_T::n_filt
+	+ cc*CONFIG_T::n_filt
+	+ ff;
+      
+      if( (oh*CONFIG_T::stride_height+fh) < CONFIG_T::pad_top || (oh*CONFIG_T::stride_height+fh) >= (CONFIG_T::pad_top+CONFIG_T::in_height) 
+	  || (ow*CONFIG_T::stride_width+fw) < CONFIG_T::pad_left || (ow*CONFIG_T::stride_width+fw) >= (CONFIG_T::pad_left+CONFIG_T::in_width)) {
+	//padded - set to zero
+	weights_dup[tl] = 0;
+	continue;
+      }
+      else {
+	weights_dup[tl] = weights[index_weight];
+      }
+    }
+ }//end duplicate_weights
+ 
+#define DIV_ROUNDUP(n,d) ((n + d - 1) / d)
 
 template<class data_T, class res_T, typename CONFIG_T>
 void conv_2d(
@@ -119,101 +146,81 @@ void conv_2d(
     }
   
 	  
-    typename CONFIG_T::accum_t mult[CONFIG_T::out_height * CONFIG_T::out_width * CONFIG_T::n_filt * CONFIG_T::n_chan * CONFIG_T::filt_height * CONFIG_T::filt_width];
+    //typename CONFIG_T::accum_t mult[CONFIG_T::out_height * CONFIG_T::out_width * CONFIG_T::n_filt * CONFIG_T::n_chan * CONFIG_T::filt_height * CONFIG_T::filt_width];
     typename CONFIG_T::accum_t acc[CONFIG_T::out_height * CONFIG_T::out_width * CONFIG_T::n_filt];
+    typename CONFIG_T::weight_t  weights_dup[CONFIG_T::out_height*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width];
+    duplicate_weights<CONFIG_T>(weights, weights_dup);
+    int      cycle_factor = DIV_ROUNDUP(CONFIG_T::out_height*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width, CONFIG_T::reuse_factor);
 
-    #pragma HLS ARRAY_PARTITION variable=mult complete dim=0
+    //#pragma HLS ARRAY_PARTITION variable=mult complete dim=0
     #pragma HLS ARRAY_PARTITION variable=acc complete dim=0
+    #pragma HLS ARRAY_RESHAPE   variable=weights_dup block factor=cycle_factor
     
-    // Use a function_instantiate in case it helps to explicitly optimize unchanging weights/biases 
-    #pragma HLS function_instantiate variable=weights,biases
+    // Use a function_instantiate in case it helps to explicitly optimize unchanging weights_dup/biases 
+    #pragma HLS function_instantiate variable=weights_dup,biases
     
     // Parallel mode
-    #pragma HLS PIPELINE
+    //#pragma HLS PIPELINE
     #pragma HLS ARRAY_PARTITION variable=biases complete dim=0
   
     // Limit multipliers to control parallelization
-    const int multiplier_limit = compute_multiplier_limit_conv2d<CONFIG_T>(weights);
-    #pragma HLS ALLOCATION instances=mul limit=multiplier_limit operation
+    //const int multiplier_limit = compute_multiplier_limit_conv2d<CONFIG_T>(weights);
+    //std::cout << "multiplier_limit =" << multiplier_limit << std::endl;
+    //#pragma HLS ALLOCATION instances=mul limit=multiplier_limit operation
     
-    // Convolve, saving all multiplication results to accumulate later
-    ConvOutHeight: for(int oh = 0; oh < CONFIG_T::out_height; oh++) {
-      ConvOutWidth: for(int ow = 0; ow < CONFIG_T::out_width; ow++) {
-        ConvFilt: for(int ff = 0; ff < CONFIG_T::n_filt; ff++){
-          ConvChan: for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
-            ConvFiltHeight: for(int fh = 0; fh < CONFIG_T::filt_height; fh++){
-              ConvFiltWidth: for(int fw = 0; fw < CONFIG_T::filt_width; fw++){
-                    
-                int index_mult = oh*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width 
-                               + ow*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width 
-               		       + ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width
-              		       + cc*CONFIG_T::filt_height*CONFIG_T::filt_width
-                               + fh*CONFIG_T::filt_width 
- 		               + fw;
-                                 
-		int index_weight = fh*CONFIG_T::filt_width*CONFIG_T::n_chan*CONFIG_T::n_filt
-                		 + fw*CONFIG_T::n_chan*CONFIG_T::n_filt
-            		         + cc*CONFIG_T::n_filt
-         		         + ff;
-
-		if( (oh*CONFIG_T::stride_height+fh) < CONFIG_T::pad_top || (oh*CONFIG_T::stride_height+fh) >= (CONFIG_T::pad_top+CONFIG_T::in_height) 
-          	 || (ow*CONFIG_T::stride_width+fw) < CONFIG_T::pad_left || (ow*CONFIG_T::stride_width+fw) >= (CONFIG_T::pad_left+CONFIG_T::in_width)) 
-		{
-                  mult[index_mult] = 0;
-                }
-		else {
-		    mult[index_mult] = data_1d  [ (oh*CONFIG_T::stride_height+fh-CONFIG_T::pad_top)*CONFIG_T::in_width*CONFIG_T::n_chan
-						+(ow*CONFIG_T::stride_width+fw-CONFIG_T::pad_left)*CONFIG_T::n_chan
-                                                +cc ] * weights[index_weight];
-                }
-
-              }//end mult loop
-            }//end channel loop
-	  }//end filter width loop
-        }//end filter height loop      
-      }//end output width loop
-    }//end output height loop
-
+    int total_loop = CONFIG_T::out_height*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width;
+    std::cout << "LOOP COUNT: " << total_loop << std::endl;
+    int rufactor = CONFIG_T::reuse_factor;
 
     // Initialize accumulator with input biases
     for(int oh = 0; oh < CONFIG_T::out_height; oh++) {
+      #pragma HLS UNROLL
       for(int ow = 0; ow < CONFIG_T::out_width; ow++) {
-        for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
+        #pragma HLS UNROLL
+        for(int ff = 0; ff < CONFIG_T::n_filt; ff++) { 
+          #pragma HLS UNROLL
           acc[oh*CONFIG_T::out_width*CONFIG_T::n_filt + ow*CONFIG_T::n_filt + ff]=biases[ff];
         }
       }
     }
-
-    
-    // Accumulate multiplication result
-    AccumOutHeight: for(int oh = 0; oh < CONFIG_T::out_height; oh++) {
-      AccumOutWidth: for(int ow = 0; ow < CONFIG_T::out_width; ow++) {
-        AccumFilt: for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
-	  //Do "dot product" sum within filter and sum over channels
-          AccumChan: for(int cc = 0; cc < CONFIG_T::n_chan; cc++){
-            AccumDotHeight: for(int fh = 0; fh < CONFIG_T::filt_height; fh++){
-              AccumDotWidth: for(int fw = 0; fw < CONFIG_T::filt_width; fw++){
-
-                int index_mult = oh*CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width 
-                               + ow*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width 
-               		       + ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width
-              		       + cc*CONFIG_T::filt_height*CONFIG_T::filt_width
-                               + fh*CONFIG_T::filt_width 
- 		               + fw;
-		
-		acc[oh*CONFIG_T::out_width*CONFIG_T::n_filt + ow*CONFIG_T::n_filt + ff] += mult[index_mult];
-                
-              }//end dot product filter width loop
-            }//end dot product filter height loop
-	  }//end n channel loop
-	}//end n filter loop
-      }//end output width loop
-    }//end output height loop
-    
+    std::cout << "after initializing acc " << std::endl;
+    std::cout << "reuse_factor =" << CONFIG_T::reuse_factor << std::endl;
+    std::cout << "cycle_factor =" << cycle_factor << std::endl;
+    for (int rf = 0; rf < rufactor; rf++) {
+      std::cout << "rf =" << rf << std::cout; 
+      #pragma HLS PIPELINE II=1 rewind
+        for (int cf = 0; cf < cycle_factor; cf++) {
+          std::cout << "cf =" << cf << std::cout; 
+          #pragma HLS UNROLL
+	  int tl = rf*cycle_factor + cf;
+	  std::cout << "tl =" << tl << std::cout; 
+	  if (tl > total_loop) {
+	    // do nothing
+	  }
+	  else{
+	    int fw = tl % CONFIG_T::filt_width;
+	    int fh = (tl - fw)/CONFIG_T::filt_width % (CONFIG_T::filt_height);
+	    int cc = (tl - fw - fh*CONFIG_T::filt_width)/(CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::n_chan);
+	    int ff = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::n_filt);
+	    int ow = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width - ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width) % (CONFIG_T::out_width);
+	    int oh = (tl - fw - fh*CONFIG_T::filt_width - cc*CONFIG_T::filt_height*CONFIG_T::filt_width - ff*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width - ow*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width)/(CONFIG_T::out_width*CONFIG_T::n_filt*CONFIG_T::n_chan*CONFIG_T::filt_height*CONFIG_T::filt_width);
+	    int index_weight = fh*CONFIG_T::filt_width*CONFIG_T::n_chan*CONFIG_T::n_filt
+	      + fw*CONFIG_T::n_chan*CONFIG_T::n_filt
+	      + cc*CONFIG_T::n_filt
+	      + ff;
+	    acc[oh*CONFIG_T::out_width*CONFIG_T::n_filt + ow*CONFIG_T::n_filt + ff] += data_1d  [ (oh*CONFIG_T::stride_height+fh-CONFIG_T::pad_top)*CONFIG_T::in_width*CONFIG_T::n_chan
+												  +(ow*CONFIG_T::stride_width+fw-CONFIG_T::pad_left)*CONFIG_T::n_chan+cc ] * weights_dup[tl];  
+	  }
+	}// end cycle factor loop
+	}// end reuse factor loop
+	    
      // Cast to "res_t" type 
     for(int oh = 0; oh < CONFIG_T::out_height; oh++) {
+      #pragma HLS UNROLL
       for(int ow = 0; ow < CONFIG_T::out_width; ow++) {
+        #pragma HLS UNROLL
 	for(int ff = 0; ff < CONFIG_T::n_filt; ff++) {
+          #pragma HLS UNROLL
  	  res[oh][ow][ff] = (res_T)(acc[oh*CONFIG_T::out_width*CONFIG_T::n_filt + ow*CONFIG_T::n_filt + ff]);
 	}
       }
