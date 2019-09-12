@@ -1,0 +1,19 @@
+KerasJson: keras/KERAS_mnist_mlp128_prune0.90.json
+KerasH5:   keras/KERAS_mnist_mlp128_prune0.90_weights.h5
+InputData: keras/KERAS_mnist_mlp128_prune0.90_input_features.dat
+OutputPredictions: keras/KERAS_mnist_mlp128_prune0.90_predictions.dat
+TruthLabels: keras/KERAS_mnist_mlp128_prune0.90_truth_labels.dat
+OutputDir: my-hls-test-mnist-prune90
+ProjectName: myproject
+XilinxPart: xcvu9p-fsgd2104-2-i
+ClockPeriod: 5
+
+IOType: io_parallel # options: io_serial/io_parallel
+HLSConfig:
+  Model:
+    Precision: ap_fixed<16,6>
+    ReuseFactor: 128
+    Strategy: Resource
+  LayerName:
+    dense_1:
+      ReuseFactor: 112
