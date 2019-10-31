@@ -3,7 +3,7 @@ KerasH5:   keras/KERAS_mnist_mlp128_prune0.95_weights.h5
 InputData: keras/KERAS_mnist_mlp128_prune0.95_input_features.dat
 OutputPredictions: keras/KERAS_mnist_mlp128_prune0.95_predictions.dat
 TruthLabels: keras/KERAS_mnist_mlp128_prune0.95_truth_labels.dat
-OutputDir: my-hls-test-mnist-prune95
+OutputDir: my-hls-test-mnist-prune95-compress
 ProjectName: myproject
 #XilinxPart: xcvu9p-fsgd2104-2-i
 XilinxPart: xcku115-flvb2104-2-i
@@ -15,6 +15,7 @@ HLSConfig:
     Precision: ap_fixed<16,6>
     ReuseFactor: 128
     Strategy: Resource
+    Compression: True
   LayerName:
     dense_1:
       ReuseFactor: 112

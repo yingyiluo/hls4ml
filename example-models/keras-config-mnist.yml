@@ -5,7 +5,8 @@ OutputPredictions: keras/KERAS_mnist_mlp128_predictions.dat
 TruthLabels: keras/KERAS_mnist_mlp128_truth_labels.dat
 OutputDir: my-hls-test-mnist
 ProjectName: myproject
-XilinxPart: xcvu9p-fsgd2104-2-i
+#XilinxPart: xcvu9p-fsgd2104-2-i
+XilinxPart: xcku115-flvb2104-2-i
 ClockPeriod: 5
 
 IOType: io_parallel # options: io_serial/io_parallel
