@@ -1,0 +1,20 @@
+KerasJson: keras/KERAS_binary_mlp.json
+KerasH5:   keras/KERAS_binary_mlp_weights.h5
+InputData: keras/KERAS_binary_mlp_input_features.dat
+OutputPredictions: keras/KERAS_binary_mlp_predictions.dat
+TruthLabels: keras/KERAS_binary_mlp_truth_labels.dat
+OutputDir: my-hls-test-mnist-binary
+ProjectName: myproject
+#XilinxPart: xcvu9p-fsgd2104-2-i
+XilinxPart: xcku115-flvb2104-2-i
+ClockPeriod: 5
+
+IOType: io_parallel # options: io_serial/io_parallel
+HLSConfig:
+  Model:
+    Precision: ap_fixed<16,6>
+    ReuseFactor: 128
+    Strategy: Resource
+  LayerName:
+    dense1:
+      ReuseFactor: 112

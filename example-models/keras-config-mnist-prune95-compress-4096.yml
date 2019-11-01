@@ -16,6 +16,6 @@ HLSConfig:
     ReuseFactor: 4096
     Strategy: Resource
     Compression: True
-  LayerName:
-    dense_1:
-      ReuseFactor: 784
+#  LayerName:
+#    dense_1:
+#      ReuseFactor: 784

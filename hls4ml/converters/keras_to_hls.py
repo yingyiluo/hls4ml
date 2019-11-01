@@ -54,7 +54,7 @@ def keras_to_hls(yamlConfig):
     #print(model_arch)
 
     #Define supported laers
-    core_layers = ['InputLayer', 'Dropout', 'Flatten', 'Dense', 'BinaryDense', 'TernaryDense']
+    core_layers = ['InputLayer', 'Dropout', 'Flatten', 'Dense', 'BinaryDense', 'TernaryDense', 'DropoutNoScaleForBinary', 'DropoutNoScaleForTernary']
     conv_layers = ['Conv1D', 'Conv2D']
     pooling_layers = ['MaxPooling1D', 'MaxPooling2D', 'AveragePooling1D', 'AveragePooling2D']
     norm_layers = ['BatchNormalization']
@@ -63,7 +63,7 @@ def keras_to_hls(yamlConfig):
     supported_layers = core_layers + conv_layers + pooling_layers + norm_layers + activation_layers + merge_layers
 
     #Define layers to skip for conversion to HLS
-    skip_layers = ['Dropout', 'Flatten']
+    skip_layers = ['Dropout', 'Flatten', 'DropoutNoScaleForBinary', 'DropoutNoScaleForTernary']
     #Map inputs of skipped and split (activation) layers
     inputs_map = {}
 
