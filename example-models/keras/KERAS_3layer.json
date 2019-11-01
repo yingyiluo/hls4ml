@@ -31,13 +31,8 @@
                     "activity_regularizer": null,
                     "bias_constraint": null,
                     "bias_initializer": {
-                        "class_name": "VarianceScaling",
-                        "config": {
-                            "distribution": "uniform",
-                            "mode": "fan_in",
-                            "scale": 1.0,
-                            "seed": null
-                        }
+                        "class_name": "Zeros",
+                        "config": {}
                     },
                     "bias_regularizer": null,
                     "kernel_constraint": null,
@@ -81,13 +76,8 @@
                     "activity_regularizer": null,
                     "bias_constraint": null,
                     "bias_initializer": {
-                        "class_name": "VarianceScaling",
-                        "config": {
-                            "distribution": "uniform",
-                            "mode": "fan_in",
-                            "scale": 1.0,
-                            "seed": null
-                        }
+                        "class_name": "Zeros",
+                        "config": {}
                     },
                     "bias_regularizer": null,
                     "kernel_constraint": null,
@@ -131,13 +121,8 @@
                     "activity_regularizer": null,
                     "bias_constraint": null,
                     "bias_initializer": {
-                        "class_name": "VarianceScaling",
-                        "config": {
-                            "distribution": "uniform",
-                            "mode": "fan_in",
-                            "scale": 1.0,
-                            "seed": null
-                        }
+                        "class_name": "Zeros",
+                        "config": {}
                     },
                     "bias_regularizer": null,
                     "kernel_constraint": null,
@@ -181,13 +166,8 @@
                     "activity_regularizer": null,
                     "bias_constraint": null,
                     "bias_initializer": {
-                        "class_name": "VarianceScaling",
-                        "config": {
-                            "distribution": "uniform",
-                            "mode": "fan_in",
-                            "scale": 1.0,
-                            "seed": null
-                        }
+                        "class_name": "Zeros",
+                        "config": {}
                     },
                     "bias_regularizer": null,
                     "kernel_constraint": null,
@@ -234,5 +214,5 @@
             ]
         ]
     },
-    "keras_version": "2.0.0"
+    "keras_version": "2.2.4"
 }
