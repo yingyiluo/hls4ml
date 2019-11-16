@@ -25,7 +25,7 @@ set ec::MAP_EFFORT      high
 set ec::INCR_EFFORT     high
 
 #set TSMC_PDK "/asic/cad/Library/tsmc/TSMC65_VCAD/Base_PDK/V1.7A_1/1p9m6x1z1u"
-set OPEN45NM_PDK "/opt/cad/catapult/pkgs/siflibs/nangate"
+set OPEN45NM_PDK "/vol/mentor/Catapult_Synthesis_10.4a/Mgc_home/pkgs/siflibs/nangate"
 
 #set_attr library /opt/cad/catapult/pkgs/siflibs/nangate/nangate45nm_nldm.lib
 #set_attr lef_library /opt/cad/catapult/pkgs/siflibs/nangate/nangate45nm.lef

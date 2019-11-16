@@ -41,7 +41,7 @@ proc source_custom_script { stage } {
 #set RTL_TOOL_SCRIPT_DIR ./input/.
 #set RTL_TOOL_SCRIPT_DIR [file dirname [file normalize [info script]]]
 #puts "-- RTL_TOOL_SCRIPT_DIR is set to '$RTL_TOOL_SCRIPT_DIR' "
-set MGC_HOME /opt/cad/catapult
+set MGC_HOME /vol/mentor/Catapult_Synthesis_10.4a/Mgc_home
 
 #puts "Note: Removing old directory gate_synthesis_rc"
 #if { [file isdirectory "gate_synthesis_rc"] } {
@@ -67,8 +67,8 @@ set_attr delete_unloaded_insts false
 source_custom_script initial
 
 ## Configure technology settings
-set_attr library /opt/cad/catapult/pkgs/siflibs/nangate/nangate45nm_nldm.lib
-set_attr lef_library /opt/cad/catapult/pkgs/siflibs/nangate/nangate45nm.lef
+set_attr library /vol/mentor/Catapult_Synthesis_10.4a/Mgc_home/pkgs/siflibs/nangate/nangate45nm_nldm.lib
+set_attr lef_library /vol/mentor/Catapult_Synthesis_10.4a/Mgc_home/pkgs/siflibs/nangate/nangate45nm.lef
 
 ## Exclude cells from synthesis
 set_attr avoid true [find /lib*/NangateOpenCellLibrary -libcell CLKBUF_X1]

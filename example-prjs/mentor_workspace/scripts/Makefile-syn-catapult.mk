@@ -16,22 +16,22 @@ gui-fpga:
 
 hls-fpga-gui: --init
 	catapult -file build_prj_fpga.tcl -logfile ./catapult-gui-fpga.log  &
-	tar cvfz catapult-fpga-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_fpga.ccs  Catapult_fpga catapult-gui-fpga.log tb_data/catapult_fpga_csim_results.log tb_data/catapult_fpga_rtl_cosim_results.log
+	tar cvzf catapult-fpga-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_fpga.ccs  Catapult_fpga catapult-gui-fpga.log tb_data/catapult_fpga_csim_results.log tb_data/catapult_fpga_rtl_cosim_results.log
 .PHONY: hls-fpga-gui
 
 hls-fpga-sh: --init
 	catapult -shell -file build_prj_fpga.tcl -logfile ./catapult-fpga.log
-	tar cvfz catapult-fpga-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_fpga.ccs  Catapult_fpga catapult-fpga.log tb_data/catapult_fpga_csim_results.log tb_data/catapult_fpga_rtl_cosim_results.log
+	tar cvzf catapult-fpga-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_fpga.ccs  Catapult_fpga catapult-fpga.log tb_data/catapult_fpga_csim_results.log tb_data/catapult_fpga_rtl_cosim_results.log
 .PHONY: hls-fpga-sh
 
 hls-asic-gui: --init
 	catapult -file build_prj_asic.tcl -logfile ./catapult-gui-asic.log  &
-	tar cvfz catapult-asic-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_asic.ccs  Catapult_asic catapult-gui-asic.log tb_data/catapult_asic_csim_results.log tb_data/catapult_asic_rtl_cosim_results.log
+	tar cvzf catapult-asic-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_asic.ccs  Catapult_asic catapult-gui-asic.log tb_data/catapult_asic_csim_results.log tb_data/catapult_asic_rtl_cosim_results.log
 .PHONY: hls-asic-gui
 
 hls-asic-sh: --init
 	catapult -shell -file build_prj_asic.tcl -logfile ./catapult-asic.log 
-	tar cvfz catapult-asic-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_asic.ccs  Catapult_asic catapult-asic.log tb_data/catapult_asic_csim_results.log tb_data/catapult_asic_rtl_cosim_results.log
+	tar cvzf catapult-asic-$$(date '+%Y%m%d-%H%M%S').tgz Catapult_asic.ccs  Catapult_asic catapult-asic.log tb_data/catapult_asic_csim_results.log tb_data/catapult_asic_rtl_cosim_results.log
 .PHONY: hls-asic-sh
 
 kill-all:
